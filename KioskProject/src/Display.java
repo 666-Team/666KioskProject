@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class Display {
     // 필드
     int password = 1004;

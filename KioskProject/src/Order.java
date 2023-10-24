@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class Order {
 
@@ -16,6 +17,10 @@ public class Order {
     private List<Product> basket = new ArrayList<>();
 
     private OrderStatus orderStatus;
+
+    LocalDateTime orderTime;
+
+    LocalDateTime orderCompleteTime;
 
     //생성자
 
