@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Display {
@@ -7,35 +9,35 @@ public class Display {
     int password = 1004;
     public static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
-    static List<Product> burgerSetMenuList = new ArrayList<>();
-    static List<Product> burgerMenuList = new ArrayList<>();
-    static List<Product> sideMenuList = new ArrayList<>();
+    static Map<String, List<Product>> products = new HashMap<>();
 
     static Scanner scanner = new Scanner(System.in);
     static Order order = new Order();
 
     static {
-        //버거세트 초기화
+        // 데이터 초기화
         menuList.add(new Menu("햄버거 세트", "햄버거 세트입니다."));
         menuList.add(new Menu("햄버거 단품", "햄버거 단품입니다."));
         menuList.add(new Menu("사이드", "사이드 메뉴입니다."));
 
-        burgerSetMenuList.add(new Product("콰트로 치즈 와퍼 세트", "네가지 고품격 치즈와 100% 순쇠고기 패티로 탄생한 버거킹의 스테디 셀러", 11300.0));
-        burgerSetMenuList.add(new Product("비프 불고기 버거 세트", "불고기 소스와 불맛 가득 100% 순쇠고기 패티의 감칠맛나는 조화", 7900.0));
-        burgerSetMenuList.add(
+        products.put("햄버거 세트", new ArrayList<>());
+        List<Product> HamburgerSetList = products.get("햄버거 세트");
+        HamburgerSetList.add(new Product("콰트로 치즈 와퍼 세트", "네가지 고품격 치즈와 100% 순쇠고기 패티로 탄생한 버거킹의 스테디 셀러", 11300.0));
+        HamburgerSetList.add(new Product("비프 불고기 버거 세트", "불고기 소스와 불맛 가득 100% 순쇠고기 패티의 감칠맛나는 조화", 7900.0));
+        HamburgerSetList.add(
                 new Product("트러플 머쉬룸 와퍼 세트", "트러플소스 2배로 더욱 깊어진 풍미, 네 가지 머쉬룸이 선사하는 깊고 풍부한 맛의 향연", 11900.0));
 
-        burgerMenuList.add(new Product("콰트로 치즈 와퍼", "네가지 고품격 치즈와 100% 순쇠고기 패티로 탄생한 버거킹의 스테디 셀러", 8800.0));
-        burgerMenuList.add(new Product("비프 불고기 버거", "불고기 소스와 불맛 가득 100% 순쇠고기 패티의 감칠맛나는 조화", 5900.0));
-        burgerMenuList.add(new Product("트러플 머쉬룸 와퍼", "트러플소스 2배로 더욱 깊어진 풍미, 네 가지 머쉬룸이 선사하는 깊고 풍부한 맛의 향연", 9400.0));
+        products.put("햄버거 단품", new ArrayList<>());
+        List<Product> HamburgerList = products.get("햄버거 단품");
+        HamburgerList.add(new Product("콰트로 치즈 와퍼", "네가지 고품격 치즈와 100% 순쇠고기 패티로 탄생한 버거킹의 스테디 셀러", 8800.0));
+        HamburgerList.add(new Product("비프 불고기 버거", "불고기 소스와 불맛 가득 100% 순쇠고기 패티의 감칠맛나는 조화", 5900.0));
+        HamburgerList.add(new Product("트러플 머쉬룸 와퍼", "트러플소스 2배로 더욱 깊어진 풍미, 네 가지 머쉬룸이 선사하는 깊고 풍부한 맛의 향연", 9400.0));
 
-        sideMenuList.add(new Product("치즈 프라이", "바삭한 프렌치프라이에 고소한 치즈가 듬뿍 치즈프라이", 3900.0));
-        sideMenuList.add(new Product("너겟킹 4조각", "바삭하고 촉촉한 부드러운 너겟킹 (4EA)", 3100.0));
-        sideMenuList.add(new Product("크리미모짜볼", "겉은 바삭~ 속은 부드러운 크림치즈가 쏘옥, 크리미모짜볼 (10EA)", 5600.0));
-    }
-
-    // 생성자
-    public Display() {
+        products.put("사이드", new ArrayList<>());
+        List<Product> sideList = products.get("사이드");
+        sideList.add(new Product("치즈 프라이", "바삭한 프렌치프라이에 고소한 치즈가 듬뿍 치즈프라이", 3900.0));
+        sideList.add(new Product("너겟킹 4조각", "바삭하고 촉촉한 부드러운 너겟킹 (4EA)", 3100.0));
+        sideList.add(new Product("크리미모짜볼", "겉은 바삭~ 속은 부드러운 크림치즈가 쏘옥, 크리미모짜볼 (10EA)", 5600.0));
     }
 
     // 메소드
@@ -50,156 +52,86 @@ public class Display {
         }
         System.out.println();
         System.out.println("[ ORDER MENU ]");
-        System.out.println("4. 장바구니 확인");
-        System.out.println("5. 주문 취소");
+        System.out.println(menuList.size() + 1 + ". 장바구니 확인");
+        System.out.println(menuList.size() + 2 + ". 주문 취소");
         System.out.println();
         Scanner mainScanner = new Scanner(System.in);
         int number = mainScanner.nextInt();
 
-        if (number == 1) {
-            printBurgerSetMenuList();
-        } else if (number == 2) {
-            printBurgerMenuList();
-        } else if (number == 3) {
-            printSideMenuList();
-        } else if (number == 4) {
+        if (number == 0) {
+            printLoginAdmin();
+        } else if (number >= 1 && number <= menuList.size()) {
+            printProductList(number);
+        } else if (number == menuList.size() + 1) {
             printBasket();
-        } else if (number == 5) {
-            cancelBasket();
-        } else if (number == 0) {
-            adminPassword();
+        } else if (number == menuList.size() + 2) {
+            printCancelBasket();
         } else {
             System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
         }
     }
 
-    void printBurgerSetMenuList() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
+    void printProductList(int number) throws InterruptedException {
+
+        Menu menu = menuList.get(number - 1);
+        String menuName = menu.getName();
+
         System.out.println();
         System.out.println("버커킹 에 오신걸 환영합니다.");
         System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요");
         System.out.println();
-        System.out.println("[ " + menuList.get(0).getName() + " MENU ]");
+        System.out.println("[ " + menuName + " MENU ]");
 
-        for (int i = 0; i < burgerSetMenuList.size(); i++) {
+        List<Product> productList = Display.products.get(menuName);
+        for (int i = 0; i < productList.size(); i++) {
             System.out.println(
-                    i + 1 + ". " + burgerSetMenuList.get(i).getName() + "\t | " + burgerSetMenuList.get(i).getPrice()
-                            + "\t | " + burgerSetMenuList.get(i).getExplain());
+                    i + 1 + ". " + productList.get(i).getName() + "\t | " + productList.get(i).getPrice()
+                            + "\t | " + productList.get(i).getExplain());
         }
+
         System.out.println();
         System.out.println("[ ORDER MENU ]");
-        System.out.println("4. 장바구니 확인");
-        System.out.println("5. 주문 취소");
+        System.out.println(productList.size() + 1 + ". 장바구니 확인");
+        System.out.println(productList.size() + 2 + ". 주문 취소");
         System.out.println();
-        int setOrder = mainScanner.nextInt();
-        if (setOrder == 1) {
-            addBasket(burgerSetMenuList.get(0));
-        } else if (setOrder == 2) {
-            addBasket(burgerSetMenuList.get(1));
-        } else if (setOrder == 3) {
-            addBasket(burgerSetMenuList.get(2));
-        } else if (setOrder == 4) {
+
+        int setOrder = scanner.nextInt();
+        if (setOrder >= 1 && setOrder <= productList.size()) {
+            printAddBasket(productList.get(setOrder - 1));
+        } else if (setOrder == productList.size() + 1) {
             printBasket();
-        } else if (setOrder == 5) {
-            cancelBasket();
+        } else if (setOrder == productList.size() + 2) {
+            printCancelBasket();
         } else {
             System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
         }
     }
 
-    void printBurgerMenuList() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("버커킹 에 오신걸 환영합니다.");
-        System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요");
-        System.out.println();
-        System.out.println("[ " + menuList.get(1).getName() + " MENU ]");
-        for (int i = 0; i < burgerMenuList.size(); i++) {
-            System.out.println(
-                    i + 1 + ". " + burgerMenuList.get(i).getName() + "\t | " + burgerMenuList.get(i).getPrice()
-                            + "\t | "
-                            + burgerMenuList.get(i).getPrice());
-        }
-        System.out.println();
-        System.out.println("[ ORDER MENU ]");
-        System.out.println((burgerMenuList.size() + 1) + ". 장바구니 확인");
-        System.out.println((burgerMenuList.size() + 2) + ". 주문 취소");
-        System.out.println();
-        int setOrder = mainScanner.nextInt();
-        if (setOrder == 1) {
-            addBasket(burgerMenuList.get(0));
-        } else if (setOrder == 2) {
-            addBasket(burgerMenuList.get(1));
-        } else if (setOrder == 3) {
-            addBasket(burgerMenuList.get(2));
-        } else if (setOrder == 4) {
-            printBasket();
-        } else if (setOrder == 5) {
-            cancelBasket();
-        } else {
-            System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
-        }
-    }
-
-    void printSideMenuList() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("버커킹 에 오신걸 환영합니다.");
-        System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요");
-        System.out.println();
-        System.out.println("[ " + menuList.get(2).getName() + " MENU ]");
-        for (int i = 0; i < sideMenuList.size(); i++) {
-            System.out.println(
-                    i + 1 + ". " + sideMenuList.get(i).getName() + "\t | " + sideMenuList.get(i).getPrice() + "\t | "
-                            + sideMenuList.get(i).getExplain());
-        }
-        System.out.println();
-        System.out.println("[ ORDER MENU ]");
-        System.out.println((sideMenuList.size() + 1) + ". 장바구니 확인");
-        System.out.println((sideMenuList.size() + 2) + ". 주문 취소");
-        System.out.println();
-        int setOrder = mainScanner.nextInt();
-        if (setOrder == 1) {
-            addBasket(sideMenuList.get(0));
-        } else if (setOrder == 2) {
-            addBasket(sideMenuList.get(1));
-        } else if (setOrder == 3) {
-            addBasket(sideMenuList.get(2));
-        } else if (setOrder == 4) {
-            printBasket();
-        } else if (setOrder == 5) {
-            cancelBasket();
-        } else {
-            System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
-        }
-    }
-
-    void adminPassword() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
+    void printLoginAdmin() throws InterruptedException {
         System.out.println();
         System.out.println("[ ONLY ADMIN ]");
         System.out.println();
         System.out.println("1. 비밀번호 입력  2.돌아가기");
         System.out.println();
-        int mainSelect = mainScanner.nextInt();
+        int mainSelect = scanner.nextInt();
         if (mainSelect == 1) {
             System.out.println();
             System.out.println("[ 비밀번호를 입력하세요 ]");
             System.out.println();
-            int passwordInput = mainScanner.nextInt();
+            int passwordInput = scanner.nextInt();
             if (passwordInput == password) {
                 printAdminMenu();
             } else {
                 System.out.println();
                 System.out.println("비밀번호를 틀렸습니다.");
-                adminPassword();
+                printLoginAdmin();
             }
         } else if (mainSelect == 2) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
         } else {
             System.out.println("잘못된 값을 입력했습니다.");
-            adminPassword();
+            printLoginAdmin();
         }
     }
 
@@ -310,7 +242,7 @@ public class Display {
         }
     }
 
-    public void addBasket(Product orderProduct) {
+    public void printAddBasket(Product orderProduct) {
         System.out.println();
         // 여기에 주문을 추가하는 메소드가 들어갈 것
         // basket에 담고 메인으로 돌아가야함
@@ -364,7 +296,7 @@ public class Display {
                 System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
                 printBasket();
             } else {
-                setOrderNumber();
+                printCompletedOrder();
             }
         }
         if (orderSelect == 2) {
@@ -374,7 +306,7 @@ public class Display {
         }
     }
 
-    public void cancelBasket() {
+    public void printCancelBasket() {
         System.out.println();
         // 여기에 주문을 전부 취소하는 메소드가 들어갈 것
         // 진행하던 주문을 취소하시겠습니까?
@@ -395,15 +327,15 @@ public class Display {
         }
     }
 
-    private void setOrderNumber() throws InterruptedException {
+    private void printCompletedOrder() throws InterruptedException {
         System.out.println();
         // 여기에 주문 번호를 넣어주는 메소드가 들어갈 것
         // orderNumber++..?
         System.out.println("주문이 완료되었습니다!");
         System.out.println();
         Display.orderList.add(order);
-        Order.OrderNumber++;
-        System.out.println("대기번호는 [ " + order.getNumber() + " ] 번 입니다.");
+        Order.orderNumber++;
+        System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
         order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
         // 주문 번호 주고 3초 뒤 메인으로 다시 돌아가야 함

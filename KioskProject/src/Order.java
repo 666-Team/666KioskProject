@@ -1,10 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Order {
 
-    static int OrderNumber;
+    static int orderNumber;
 
     // 필드
     private int number;
