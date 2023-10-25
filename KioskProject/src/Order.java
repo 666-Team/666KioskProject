@@ -27,6 +27,7 @@ public class Order {
 
     public Order() {
         this.orderStatus = OrderStatus.WAITING;
+        this.orderTime = LocalDateTime.now();
     }
 
     // 메소드
@@ -42,6 +43,27 @@ public class Order {
 
     public List<Product> getBasket() {
         return basket;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setNumber() {
+        orderNumber++;
+        number = orderNumber;
+    }
+
+    public void setOrderTime() {
+        orderTime = LocalDateTime.now();
+    }
+
+    public void setOrderMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage(){
+        return message;
     }
 
     public void addPrice(double price) {

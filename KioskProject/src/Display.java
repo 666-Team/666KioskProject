@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Display {
     // 필드
     int password = 1004;
-    public static List<Order> orderList = new ArrayList<>();
+    static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
 
@@ -141,7 +141,7 @@ public class Display {
         System.out.println();
         System.out.println("[ ADMIN MENU ]");
         System.out.println();
-        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경  4. 돌아가기");
+        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경  4. 돌아가기  5. 대기주문 목록");
         System.out.println();
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
@@ -153,6 +153,8 @@ public class Display {
         } else if (mainSelect == 4) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
+        } else if (mainSelect == 5) {
+            printWaitingOrderAndScanner();
         } else {
             System.out.println();
             System.out.println("잘못된 값을 입력했습니다.");
@@ -297,7 +299,7 @@ public class Display {
                 System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
                 printBasket();
             } else {
-                printCompletedOrder();
+                printOrderMessage();
             }
         }
         if (orderSelect == 2) {
@@ -334,8 +336,12 @@ public class Display {
         // orderNumber++..?
         System.out.println("주문이 완료되었습니다!");
         System.out.println();
-        Display.orderList.add(order);
-        Order.orderNumber++;
+        // 대기 번호
+//        // 요청 사항
+//        // 주문 일시
+        order.setNumber();
+        order.setOrderTime();
+        orderList.add(order);
         System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
         order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
@@ -345,14 +351,45 @@ public class Display {
     }
 
     private static double getSaleTotalPrice() {
-
         int saleTotalPrice = 0;
         for (Order order : orderList) {
             saleTotalPrice += order.getBasketTotalPrice();
         }
-
         return saleTotalPrice;
     }
 
+    private void printWaitingOrderAndScanner() {
+        printWaitingOrder();
+        waitingOrderInput();
+    }
+
+    private void printWaitingOrder() {
+        System.out.println();
+        System.out.println("[ 대기 주문 목록 ]\n");
+        if (order.getOrderStatus() == OrderStatus.WAITING) {
+            for (Order order : orderList) {
+                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항 - " + order.getMessage() + "\t | " + order.orderTime);
+                for (Product product : order.getBasket()) {
+                    System.out.println("- " + product.getName());
+                }
+                System.out.println("--------------------------------------------------");
+            }
+            System.out.println("총 주문 금액");
+            System.out.println(getSaleTotalPrice());
+        }
+    }
+
+    private void waitingOrderInput() {
+        System.out.println("대기중인 주문을 완료 처리하겠습니까?");
+        System.out.println("1. 확인  2. 취소");
+        int input = scanner.nextInt();
+    }
+
+    private void printOrderMessage() throws InterruptedException {
+        System.out.println("요구사항을 입력하세요\n");
+        String message = scanner.next();
+        order.setOrderMessage(message);
+        printCompletedOrder();
+    }
 
 }
