@@ -140,7 +140,7 @@ public class Display {
         System.out.println();
         System.out.println("[ ADMIN MENU ]");
         System.out.println();
-        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경  4. 돌아가기");
+        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경 4. 상품 삭제 5. 돌아가기");
         System.out.println();
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
@@ -150,6 +150,11 @@ public class Display {
         } else if (mainSelect == 3) {
             setAdminPassword();
         } else if (mainSelect == 4) {
+            printProduct();
+            System.out.println("삭제할 상품 ID: ");
+            int delId = scanner.nextInt();
+            deleteMenuproduct(delId);
+        } else if (mainSelect == 5) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
         } else {
@@ -241,6 +246,49 @@ public class Display {
             setAdminPassword();
         }
     }
+
+    void deleteMenuproduct(int delId) {
+        for (int i =0; i < menuList.size(); i++) {
+            if(menuList.get(i).getId()==delId){
+                System.out.println(
+                        "ID : " + menuList.get(i).getId() + "\t | " + menuList.get(i).getName()
+                                + "\t | " + menuList.get(i).getExplain()+"메뉴가 삭제되었습니다.");
+                menuList.remove(i);
+            }
+        }
+        for (Menu menu : menuList) {
+            String menuName = menu.getName();
+            List<Product> productList = Display.products.get(menuName);
+            for (int k = 0; k < productList.size(); k++) {
+                if (productList.get(k).getId() == delId) {
+                    System.out.println("ID : " + productList.get(k).getId() + "\t | " + productList.get(k).getName()
+                            + "\t | " + productList.get(k).getPrice() + "\t | " + productList.get(k).getExplain()
+                            + "상품이 삭제되었습니다.");
+                    productList.remove(k);
+
+                }
+            }
+        }
+
+    }
+
+    void printProduct() {
+        for (Menu value : menuList) {
+            System.out.println(
+                    "ID : " + value.getId() + "\t | " + value.getName()
+                            + "\t | " + value.getExplain());
+        }
+        for (Menu menu : menuList) {
+            String menuName = menu.getName();
+            List<Product> productList = Display.products.get(menuName);
+            for (Product product : productList) {
+                System.out.println(
+                        "ID : " + product.getId() + "\t | " + product.getName()
+                                + "\t | " + product.getPrice() + "\t | " + product.getExplain());
+            }
+        }
+    }
+
 
     public void printAddBasket(Product orderProduct) {
         System.out.println();
