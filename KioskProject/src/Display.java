@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class Display {
     // 필드
     int password = 1004;
-    public static List<Order> orderList = new ArrayList<>();
+    static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
 
@@ -140,8 +141,8 @@ public class Display {
         System.out.println();
         System.out.println("[ ADMIN MENU ]");
         System.out.println();
-        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3.항목 추가  4. 비밀번호 변경  5. 돌아가기");
-        System.out.println();
+        System.out.println("1. 대기 주문 목록 조회  2. 완료 주문 목록 조회 3. 메뉴 및 상품 추가  4. 메뉴 및 상품 삭제");
+        System.out.println("5. 총 판매 금액 현황 6. 총 판매 상품 현황 7. 비밀번호 변경  8. 돌아가기");
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
             printSalesTotalPrice();
@@ -155,6 +156,8 @@ public class Display {
         } else if (mainSelect == 5) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
+        } else if (mainSelect == 5) {
+            printWaitingOrderAndScanner();
         } else {
             System.out.println();
             System.out.println("잘못된 값을 입력했습니다.");
@@ -290,9 +293,6 @@ public class Display {
 
     public void printAddBasket(Product orderProduct) {
         System.out.println();
-        // 여기에 주문을 추가하는 메소드가 들어갈 것
-        // basket에 담고 메인으로 돌아가야함
-
         System.out.println(
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -331,8 +331,8 @@ public class Display {
         System.out.println();
         System.out.println("[ Total ]");
         System.out.println(order.getBasketTotalPrice());
-        System.out.println();
-        System.out.println("1. 주문하기  2. 메뉴판");
+        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage()+"\n");
+        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
         System.out.println();
         int orderSelect = scanner.nextInt();
         if (orderSelect == 1) {
@@ -344,8 +344,9 @@ public class Display {
             } else {
                 printCompletedOrder();
             }
-        }
-        if (orderSelect == 2) {
+        } if (orderSelect == 2) {
+            printOrderMessage();
+        } if (orderSelect == 3) {
             order = new Order();
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
@@ -354,50 +355,73 @@ public class Display {
 
     public void printCancelBasket() {
         System.out.println();
-        // 여기에 주문을 전부 취소하는 메소드가 들어갈 것
-        // 진행하던 주문을 취소하시겠습니까?
         System.out.println("진행하던 주문을 취소하시겠습니까?");
         System.out.print("1. 확인  2. 취소");
         System.out.println();
-        // 스캐너로 확인, 취소
         int orderSelect = scanner.nextInt();
         if (orderSelect == 1) {
             order = new Order();
             System.out.println();
             System.out.println("진행하던 주문이 취소되었습니다.");
-            // 캔슬 하면 메인으로 다시 돌아가야 함
         } else if (orderSelect == 2) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
-            // 캔슬 안하면 다시 원래 메뉴로 돌아갈 것
         }
     }
 
     private void printCompletedOrder() throws InterruptedException {
         System.out.println();
-        // 여기에 주문 번호를 넣어주는 메소드가 들어갈 것
-        // orderNumber++..?
         System.out.println("주문이 완료되었습니다!");
         System.out.println();
-        Display.orderList.add(order);
-        Order.orderNumber++;
+        order.setNumber();
+        order.setOrderTime();
+        orderList.add(order);
         System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
         order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
-        // 주문 번호 주고 3초 뒤 메인으로 다시 돌아가야 함
-        // Timer 유틸 쓸거임!! 공부하고 적용 / 어떻게 쓰지..?
         Thread.sleep(3000);
     }
 
     private static double getSaleTotalPrice() {
-
         int saleTotalPrice = 0;
         for (Order order : orderList) {
             saleTotalPrice += order.getBasketTotalPrice();
         }
-
         return saleTotalPrice;
     }
 
+    private void printWaitingOrderAndScanner() {
+        printWaitingOrder();
+        waitingOrderInput();
+    }
+
+    private void printWaitingOrder() {
+        System.out.println();
+        System.out.println("[ 대기 주문 목록 ]\n");
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.WAITING) {
+                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.orderTime);
+                for (Product product : order.getBasket()) {
+                    System.out.println("- " + product.getName());
+                }
+                System.out.println("--------------------------------------------------");
+            }
+            System.out.println("총 주문 금액");
+            System.out.println(getSaleTotalPrice());
+        }
+    }
+
+    private void waitingOrderInput() {
+        System.out.println("대기중인 주문을 완료 처리하겠습니까?");
+        System.out.println("1. 확인  2. 취소");
+        int input = scanner.nextInt();
+    }
+
+    private void printOrderMessage() throws InterruptedException {
+        System.out.println("\n요구사항을 입력하세요\n");
+        String message = scanner.next();
+        order.setOrderMessage(message);
+        printBasket();
+    }
 
 }
