@@ -11,7 +11,7 @@ public class Order {
 
     private double basketTotalPrice = 0;
 
-    private String message;
+    private String message = "미 입력";
 
     // 하위 객체
     private List<Product> basket = new ArrayList<>();
@@ -27,7 +27,6 @@ public class Order {
 
     public Order() {
         this.orderStatus = OrderStatus.WAITING;
-        this.orderTime = LocalDateTime.now();
     }
 
     // 메소드
@@ -69,4 +68,5 @@ public class Order {
     public void addPrice(double price) {
         basketTotalPrice += price;
     }
+
 }

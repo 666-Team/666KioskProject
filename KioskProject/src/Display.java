@@ -247,9 +247,6 @@ public class Display {
 
     public void printAddBasket(Product orderProduct) {
         System.out.println();
-        // 여기에 주문을 추가하는 메소드가 들어갈 것
-        // basket에 담고 메인으로 돌아가야함
-
         System.out.println(
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
@@ -288,8 +285,8 @@ public class Display {
         System.out.println();
         System.out.println("[ Total ]");
         System.out.println(order.getBasketTotalPrice());
-        System.out.println();
-        System.out.println("1. 주문하기  2. 메뉴판");
+        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage()+"\n");
+        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
         System.out.println();
         int orderSelect = scanner.nextInt();
         if (orderSelect == 1) {
@@ -299,10 +296,11 @@ public class Display {
                 System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
                 printBasket();
             } else {
-                printOrderMessage();
+                printCompletedOrder();
             }
-        }
-        if (orderSelect == 2) {
+        } if (orderSelect == 2) {
+            printOrderMessage();
+        } if (orderSelect == 3) {
             order = new Order();
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
@@ -311,42 +309,30 @@ public class Display {
 
     public void printCancelBasket() {
         System.out.println();
-        // 여기에 주문을 전부 취소하는 메소드가 들어갈 것
-        // 진행하던 주문을 취소하시겠습니까?
         System.out.println("진행하던 주문을 취소하시겠습니까?");
         System.out.print("1. 확인  2. 취소");
         System.out.println();
-        // 스캐너로 확인, 취소
         int orderSelect = scanner.nextInt();
         if (orderSelect == 1) {
             order = new Order();
             System.out.println();
             System.out.println("진행하던 주문이 취소되었습니다.");
-            // 캔슬 하면 메인으로 다시 돌아가야 함
         } else if (orderSelect == 2) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
-            // 캔슬 안하면 다시 원래 메뉴로 돌아갈 것
         }
     }
 
     private void printCompletedOrder() throws InterruptedException {
         System.out.println();
-        // 여기에 주문 번호를 넣어주는 메소드가 들어갈 것
-        // orderNumber++..?
         System.out.println("주문이 완료되었습니다!");
         System.out.println();
-        // 대기 번호
-//        // 요청 사항
-//        // 주문 일시
         order.setNumber();
         order.setOrderTime();
         orderList.add(order);
         System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
         order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
-        // 주문 번호 주고 3초 뒤 메인으로 다시 돌아가야 함
-        // Timer 유틸 쓸거임!! 공부하고 적용 / 어떻게 쓰지..?
         Thread.sleep(3000);
     }
 
@@ -366,9 +352,9 @@ public class Display {
     private void printWaitingOrder() {
         System.out.println();
         System.out.println("[ 대기 주문 목록 ]\n");
-        if (order.getOrderStatus() == OrderStatus.WAITING) {
-            for (Order order : orderList) {
-                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항 - " + order.getMessage() + "\t | " + order.orderTime);
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.WAITING) {
+                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.orderTime);
                 for (Product product : order.getBasket()) {
                     System.out.println("- " + product.getName());
                 }
@@ -386,10 +372,10 @@ public class Display {
     }
 
     private void printOrderMessage() throws InterruptedException {
-        System.out.println("요구사항을 입력하세요\n");
+        System.out.println("\n요구사항을 입력하세요\n");
         String message = scanner.next();
         order.setOrderMessage(message);
-        printCompletedOrder();
+        printBasket();
     }
 
 }
