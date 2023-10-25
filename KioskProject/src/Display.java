@@ -141,16 +141,19 @@ public class Display {
         System.out.println();
         System.out.println("[ ADMIN MENU ]");
         System.out.println();
-        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경  4. 돌아가기  5. 대기주문 목록");
-        System.out.println();
+        System.out.println("1. 대기 주문 목록 조회  2. 완료 주문 목록 조회 3. 메뉴 및 상품 추가  4. 메뉴 및 상품 삭제");
+        System.out.println("5. 총 판매 금액 현황 6. 총 판매 상품 현황 7. 비밀번호 변경  8. 돌아가기");
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
             printSalesTotalPrice();
         } else if (mainSelect == 2) {
             printSalesTotalProduct();
         } else if (mainSelect == 3) {
+            addMenu();
+            printAdminMenu();
+        }else if(mainSelect == 4){
             setAdminPassword();
-        } else if (mainSelect == 4) {
+        } else if (mainSelect == 5) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
         } else if (mainSelect == 5) {
@@ -210,7 +213,50 @@ public class Display {
             printSalesTotalPrice();
         }
     }
+    void addMenu() throws InterruptedException{
+        System.out.println("어떤 항목을 추가하시겠습니까?");
+        System.out.println("1.메뉴        2.상품       3.돌아가기");
+        int num = scanner.nextInt();
+        if(num == 1){
+            System.out.println("\n메뉴 이름을 입력해 주세요.");
+            Scanner scanner = new Scanner(System.in);
+            String name = scanner.nextLine();
 
+            System.out.println("\n메뉴 설명을 입력해주세요.");
+            String explain = scanner.nextLine();
+
+            menuList.add(new Menu(name, explain));
+            products.put(name, new ArrayList<>());
+
+            System.out.println("\n메뉴 생성 완료!");
+
+        } else if(num == 2){
+            System.out.println("메뉴를 선택해 주세요.");
+            for (int i = 0; i < menuList.size(); i++) {
+                System.out.println(i + 1 + ". " + menuList.get(i).getName());
+            }
+            int menuNum = scanner.nextInt();
+
+            Scanner scanner = new Scanner(System.in);
+            System.out.println(menuList.get(menuNum-1).getName() + "이(가) 선택 되었습니다.");
+            System.out.println("\n상품 이름을 입력해 주세요.");
+            String name = scanner.nextLine();
+
+            System.out.println("\n상품 설명을 입력해주세요.");
+            String explain = scanner.nextLine();
+
+            System.out.println("\n가격을 입력해주세요.");
+            double price = scanner.nextInt();
+
+            String menuName = menuList.get(menuNum - 1).getName();
+            List<Product> newList = products.get(menuName);
+            newList.add(new Product(name, explain, price));
+
+            System.out.println("\n상품 생성 완료!");
+        }else if(num == 3){
+            printAdminMenu();
+        }
+    }
     void setAdminPassword() throws InterruptedException {
         Scanner mainScanner = new Scanner(System.in);
         System.out.println();
