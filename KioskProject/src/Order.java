@@ -73,6 +73,16 @@ public class Order {
         return orderCompleteTime;
     }
 
+    public OrderStatus setOrderStatusCompleted() {
+        this.orderStatus = OrderStatus.COMPLETED;
+        return orderStatus;
+    }
+
+    public LocalDateTime setOrderCompletedTime() {
+        this.orderCompleteTime = LocalDateTime.now();
+        return orderCompleteTime;
+    }
+
     public void addPrice(double price) {
         basketTotalPrice += price;
     }

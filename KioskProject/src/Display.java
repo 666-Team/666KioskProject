@@ -145,9 +145,9 @@ public class Display {
         System.out.println("5. 총 판매 금액 현황 6. 총 판매 상품 현황 7. 비밀번호 변경  8. 돌아가기");
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
-            printSalesTotalPrice();
+            printWaitingOrder();
         } else if (mainSelect == 2) {
-            printSalesTotalProduct();
+            printCompletedOrderList();
         } else if (mainSelect == 3) {
             addMenu();
             printAdminMenu();
@@ -157,7 +157,7 @@ public class Display {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
         } else if (mainSelect == 5) {
-            printWaitingOrderAndScanner();
+            printSalesTotalPrice();
         } else {
             System.out.println();
             System.out.println("잘못된 값을 입력했습니다.");
@@ -394,14 +394,8 @@ public class Display {
         return saleTotalPrice;
     }
 
-    private void printWaitingOrderAndScanner() {
-        printWaitingOrder();
-        waitingOrderInput();
-    }
-
-    private void printWaitingOrder() {
-        System.out.println();
-        System.out.println("[ 대기 주문 목록 ]\n");
+    private void printWaitingOrder() throws InterruptedException {
+        System.out.println("\n[ 대기 주문 목록 ]\n");
         for (Order order : orderList) {
             if (order.getOrderStatus() == OrderStatus.WAITING) {
                 System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
@@ -411,15 +405,32 @@ public class Display {
                 }
                 System.out.println("--------------------------------------------------");
             }
-            System.out.println("총 주문 금액");
-            System.out.println(getSaleTotalPrice());
+        }
+        System.out.println("총 주문 금액");
+        System.out.println(getSaleTotalPrice());
+        System.out.println("\n1. 대기 주문 완료 처리 하기  2. ADMIN MENU로 돌아가기\n");
+        int input = scanner.nextInt();
+        if (input == 1) {
+            waitingOrderInput();
+        } else if (input == 2) {
+            printAdminMenu();
+        } else {
+            System.out.println("잘못된 값을 입력했습니다.");
+            printWaitingOrder();
         }
     }
 
-    private void waitingOrderInput() {
-        System.out.println("대기중인 주문을 완료 처리하겠습니까?");
-        System.out.println("1. 확인  2. 취소");
+    private void waitingOrderInput() throws InterruptedException {
+        System.out.println("\n완료처리할 대기 주문 번호 입력\n");
         int input = scanner.nextInt();
+        for (Order order : orderList) {
+            if (input == order.getNumber()) {
+                order.setOrderStatusCompleted();
+                order.setOrderCompletedTime();
+            }
+        }
+        System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
+        printWaitingOrder();
     }
 
     private void printOrderMessage() throws InterruptedException {
