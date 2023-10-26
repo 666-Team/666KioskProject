@@ -138,7 +138,7 @@ public class Display {
 
         int mainSelect = Integer.parseInt(scanner.nextLine());
         switch (mainSelect) {
-            case 1 -> printWaitingOrderAndScanner();
+            case 1 -> printWaitingOrder();
             case 2 -> printCompletedOrderList();
             case 3 -> {
                 addMenu();
@@ -205,11 +205,12 @@ public class Display {
         if (num == 1) {
             System.out.println("\n메뉴 이름을 입력해 주세요.");
             String name = scanner.nextLine();
+        }
 
         System.out.println("\n어떤 항목을 추가하시겠습니까?");
         System.out.println("1.메뉴        2.상품       3.돌아가기");
 
-        int num = Integer.parseInt(scanner.nextLine());
+        num = Integer.parseInt(scanner.nextLine());
         switch(num){
             case 1 -> printAddMenu();
             case 2 -> printAddProduct();
@@ -217,7 +218,8 @@ public class Display {
             default -> System.out.println("\n잘못된 입력입니다.");
         }
     }
-    void printAddMenu (){
+
+    void printAddMenu() {
 
         System.out.println("\n메뉴 이름을 입력해 주세요.");
         String name = scanner.nextLine();
@@ -520,14 +522,6 @@ public class Display {
             System.out.println("총 주문 금액");
             System.out.println(getSaleTotalPrice());
         }
-    }
-
-    private static double getSaleTotalPrice() {
-        int saleTotalPrice = 0;
-        for (Order order : orderList) {
-            saleTotalPrice += order.getBasketTotalPrice();
-        }
-        return saleTotalPrice;
     }
 
 }
