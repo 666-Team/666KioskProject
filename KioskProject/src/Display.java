@@ -162,6 +162,21 @@ public class Display {
         }
     }
 
+    private void printOrderMessage() throws InterruptedException {
+        System.out.println("\n요구사항을 입력하세요\n");
+        String message = scanner.nextLine();
+        if (!isLengthTwenty(message)) {
+            System.out.println("요구사항은 20자 이내 작성해주세요.");
+            printOrderMessage();
+        }
+        order.saveOrderMessage(message);
+        printBasket();
+    }
+
+    private boolean isLengthTwenty(String message) {
+        return message.length() <= 20;
+    }
+
     public void printCancelBasket() throws InterruptedException {
 
         System.out.println("\n진행하던 주문을 취소하시겠습니까?");
@@ -506,12 +521,5 @@ public class Display {
             saleTotalPrice += order.getBasketTotalPrice();
         }
         return saleTotalPrice;
-    }
-
-    private void printOrderMessage() throws InterruptedException {
-        System.out.println("\n요구사항을 입력하세요\n");
-        String message = scanner.nextLine();
-        order.setOrderMessage(message);
-        printBasket();
     }
 }
