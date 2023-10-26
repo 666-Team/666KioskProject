@@ -109,10 +109,10 @@ public class Display {
         System.out.println("1. 확인  2. 취소\n");
         int orderSelect = Integer.parseInt(scanner.nextLine());
         if (orderSelect == 1) {
-          // TODO Order.class 에서 메서드로 구현하기 (캡슐화)
+            // TODO Order.class 에서 메서드로 구현하기 (캡슐화)
             List<Product> basket = order.getBasket();
             basket.add(orderProduct);
-            order.addPrice(orderProduct.getPrice());        
+            order.addPrice(orderProduct.getPrice());
             System.out.println();
             System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
         } else if (orderSelect == 2) {
@@ -263,11 +263,12 @@ public class Display {
 
         System.out.println("\n[ 대기 주문 목록 ]\n");
 
-        for (Order order : orderList) {
-            if (order.getOrderStatus() == OrderStatus.WAITING) {
-                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
-                        + order.getOrderTime());
-                for (Product product : order.getBasket()) {
+        for (Order currentOrder : orderList) {
+            if (currentOrder.getOrderStatus() == OrderStatus.WAITING) {
+                System.out.println(currentOrder.getNumber() + "번 대기 주문 | 요구 사항: "
+                        + currentOrder.getMessage() + "\t | "
+                        +  currentOrder.getOrderTime());
+                for (Product product :  currentOrder.getBasket()) {
                     System.out.println("- " + product.getName());
                 }
                 System.out.println("--------------------------------------------------");
@@ -296,9 +297,9 @@ public class Display {
         int input = Integer.parseInt(scanner.nextLine());
 
         boolean isRemoved = false;
-        for (Order order : orderList) {
-            if (input == order.getNumber() && order.getOrderStatus() == OrderStatus.WAITING) {
-                order.changeWaitingToCompleted();
+        for (Order  currentOrder : orderList) {
+            if (input ==  currentOrder.getNumber() &&  currentOrder.getOrderStatus() == OrderStatus.WAITING) {
+                currentOrder.changeWaitingToCompleted();
                 System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
                 isRemoved = true;
                 break;
@@ -311,14 +312,16 @@ public class Display {
     }
 
     private void printCompletedOrderList() {
-      
+
         System.out.println("\n[ 완료 주문 목록 ]\n");
-        for (Order order : orderList) {
-            if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+        for (Order currentOrder : orderList) {
+            if ( currentOrder.getOrderStatus() == OrderStatus.COMPLETED) {
                 System.out.println(
-                        order.getNumber() + "번 완료 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.getOrderTime()
-                                + "\t | " + order.getOrderCompleteTime());
-                for (Product product : order.getBasket()) {
+                        currentOrder.getNumber() + "번 완료 주문 | 요구 사항: "
+                                +  currentOrder.getMessage() + "\t | "
+                                +  currentOrder.getOrderTime()
+                                + "\t | " +  currentOrder.getOrderCompleteTime());
+                for (Product product :  currentOrder.getBasket()) {
                     System.out.println("- " + product.getName());
                 }
                 System.out.println("--------------------------------------------------");
@@ -368,7 +371,7 @@ public class Display {
     }
 
     void printMenuAndProduct() {
-      
+
         System.out.println("1. 메뉴삭제 2. 상품삭제");
         int select = Integer.parseInt(scanner.nextLine());
         switch (select) {
@@ -437,8 +440,8 @@ public class Display {
         System.out.println("\n[ 총 판매상품 목록 현황 ]\n");
         System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
 
-        for (Order order : orderList) {
-            for (Product product : order.getBasket()) {
+        for (Order  currentOrder : orderList) {
+            for (Product product :  currentOrder.getBasket()) {
                 System.out.println(
                         "- " + product.getName() + "\t | " + product.getPrice());
             }
@@ -513,12 +516,12 @@ public class Display {
         System.out.println("삭제할 상품 ID: ");
         deleteProduct();
     }
-  
+
     private static double getSaleTotalPrice() {
 
         int saleTotalPrice = 0;
-        for (Order order : orderList) {
-            saleTotalPrice += order.getBasketTotalPrice();
+        for (Order  currentOrder : orderList) {
+            saleTotalPrice +=  currentOrder.getBasketTotalPrice();
         }
         return saleTotalPrice;
     }
