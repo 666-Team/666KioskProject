@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class Display {
@@ -44,6 +46,8 @@ public class Display {
     // 메소드
     public void printMain() throws InterruptedException {
 
+        printRecentOrderList();
+
         System.out.println("\n버커킹 에 오신걸 환영합니다.");
         System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요\n");
         System.out.println("[ BURGERKING MENU ]");
@@ -65,6 +69,51 @@ public class Display {
             printCancelBasket();
         } else {
             System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
+        }
+    }
+
+    private void printRecentOrderList() {
+
+        List<Order> completedList = new ArrayList<>();
+        List<Order> waitingOrderList = new ArrayList<>();
+
+        for (Order currentOrder : orderList) {
+            if (currentOrder.getOrderStatus() == OrderStatus.WAITING) {
+                waitingOrderList.add(currentOrder);
+            } else {
+                completedList.add(currentOrder);
+            }
+        }
+
+        completedList.sort(Comparator.comparing(Order::getOrderCompleteTime).reversed());
+        waitingOrderList.sort(Comparator.comparing(Order::getOrderTime).reversed());
+
+        if (completedList.size() > 0) {
+            int cnt = 0;
+            System.out.println("[ 최근 완료 주문 목록 ]");
+            for (Order completedOrder : completedList) {
+                if (cnt >= 3) {
+                    break;
+                }
+                List<Product> completedOrderBasket = completedOrder.getBasket();
+                Product firstProduct = completedOrderBasket.get(0);
+                System.out.println(
+                        completedOrder.getNumber() + "번 완료 주문 | 주문 품목: " + firstProduct.getName() + "등\t | 주문 일시: "
+                                + completedOrder.getOrderTime()
+                                + "\t | 주문 완료 일시: " + completedOrder.getOrderCompleteTime());
+                cnt++;
+            }
+
+        }
+
+        if (waitingOrderList.size() > 0) {
+            System.out.println("\n[ 대기 주문 목록 ]");
+            for (Order waitingOrder : waitingOrderList) {
+                List<Product> waitingOrderBasket = waitingOrder.getBasket();
+                Product firstProduct = waitingOrderBasket.get(0);
+                System.out.println(waitingOrder.getNumber() + "번 대기 주문 | 주문 품목: " +
+                        firstProduct.getName() + " 등...\t | 주문 일시: " + waitingOrder.getOrderTime());
+            }
         }
     }
 
@@ -266,16 +315,15 @@ public class Display {
 
         System.out.println("\n[ 대기 주문 목록 ]\n");
 
-        for (Order currentOrder : orderList) {
-            if (currentOrder.getOrderStatus() == OrderStatus.WAITING) {
-                System.out.println(currentOrder.getNumber() + "번 대기 주문 | 요구 사항: "
-                        + currentOrder.getMessage() + "\t | "
-                        +  currentOrder.getOrderTime());
-                for (Product product :  currentOrder.getBasket()) {
-                    System.out.println("- " + product.getName());
-                }
-                System.out.println("--------------------------------------------------");
+        List<Order> waitingOrderList = getWaitingOrderList();
+        for (Order currentOrder : waitingOrderList) {
+            System.out.println(currentOrder.getNumber() + "번 대기 주문 | 요구 사항: " + currentOrder.getMessage() + "\t | "
+                    + currentOrder.getOrderTime());
+            for (Product product : currentOrder.getBasket()) {
+                System.out.println("- " + product.getName());
             }
+            System.out.println("--------------------------------------------------");
+
         }
 
         System.out.println("총 주문 금액");
@@ -299,9 +347,12 @@ public class Display {
 
         int input = Integer.parseInt(scanner.nextLine());
 
+        List<Order> waitingOrderList = getWaitingOrderList();
+
         boolean isRemoved = false;
-        for (Order  currentOrder : orderList) {
-            if (input ==  currentOrder.getNumber() &&  currentOrder.getOrderStatus() == OrderStatus.WAITING) {
+      
+        for (Order currentOrder : waitingOrderList) {
+            if (input == currentOrder.getNumber()) {
                 currentOrder.changeWaitingToCompleted();
                 System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
                 isRemoved = true;
@@ -314,24 +365,32 @@ public class Display {
         printWaitingOrder();
     }
 
+    private List<Order> getWaitingOrderList() {
+        return orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.WAITING).collect(Collectors.toList());
+    }
+
     private void printCompletedOrderList() {
 
+        List<Order> completedOrderList = getCompletedOrderList();
+
         System.out.println("\n[ 완료 주문 목록 ]\n");
-        for (Order currentOrder : orderList) {
-            if ( currentOrder.getOrderStatus() == OrderStatus.COMPLETED) {
-                System.out.println(
-                        currentOrder.getNumber() + "번 완료 주문 | 요구 사항: "
-                                +  currentOrder.getMessage() + "\t | "
-                                +  currentOrder.getOrderTime()
-                                + "\t | " +  currentOrder.getOrderCompleteTime());
-                for (Product product :  currentOrder.getBasket()) {
-                    System.out.println("- " + product.getName());
-                }
-                System.out.println("--------------------------------------------------");
+
+        for (Order currentOrder : completedOrderList) {
+            System.out.println(
+                    currentOrder.getNumber() + "번 완료 주문 | 요구 사항: " + currentOrder.getMessage() + "\t | " + currentOrder.getOrderTime()
+                            + "\t | " + currentOrder.getOrderCompleteTime());
+            for (Product product : currentOrder.getBasket()) {
+                System.out.println("- " + product.getName());
             }
+            System.out.println("--------------------------------------------------");
+
             System.out.println("총 주문 금액");
             System.out.println(getSaleTotalPrice());
         }
+    }
+
+    private List<Order> getCompletedOrderList() {
+        return orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.COMPLETED).collect(Collectors.toList());
     }
 
     private void printAddMenu() {
