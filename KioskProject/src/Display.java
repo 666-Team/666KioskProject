@@ -405,7 +405,7 @@ public class Display {
         for (Order order : orderList) {
             if (order.getOrderStatus() == OrderStatus.WAITING) {
                 System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
-                        + order.getOrderCompleteTime());
+                        + order.getOrderTime());
                 for (Product product : order.getBasket()) {
                     System.out.println("- " + product.getName());
                 }
