@@ -240,7 +240,7 @@ public class Display {
                 addMenu();
                 printAdminMenu();
             }
-//            case 4 -> 
+            case 4 -> printMenuAndProduct();
             case 5 -> printSalesTotalPrice();
             case 6 -> printSalesTotalProduct();
             case 7 -> printChangeAdminPassword();
@@ -348,7 +348,7 @@ public class Display {
         String explain = scanner.nextLine();
 
         System.out.println("\n가격을 입력해주세요.");
-        double price = scanner.nextInt();
+        double price = Double.parseDouble(scanner.nextLine());
 
         String menuName = menuList.get(menuNum - 1).getName();
         List<Product> newList = products.get(menuName);
@@ -406,6 +406,7 @@ public class Display {
     }
 
     void printSalesTotalPrice() throws InterruptedException {
+
 
         System.out.println("\n[ 총 판매 금액 현황 ]\n");
         System.out.println("현재까지 총 판매된 금액은 [ " + getSaleTotalPrice() + " ] 입니다.\n");
@@ -515,7 +516,7 @@ public class Display {
 
     private void printOrderMessage() throws InterruptedException {
         System.out.println("\n요구사항을 입력하세요\n");
-        String message = scanner.next();
+        String message = scanner.nextLine();
         order.setOrderMessage(message);
         printBasket();
     }
