@@ -107,17 +107,19 @@ public class Display {
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인  2. 취소\n");
+      
         int orderSelect = Integer.parseInt(scanner.nextLine());
-        if (orderSelect == 1) {
-            // TODO Order.class 에서 메서드로 구현하기 (캡슐화)
-            List<Product> basket = order.getBasket();
-            basket.add(orderProduct);
-            order.addPrice(orderProduct.getPrice());
-            System.out.println();
-            System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
-        } else if (orderSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
+        switch (orderSelect) {
+            case 1 -> {
+                order.addProduct(orderProduct);
+                System.out.println("\n" + orderProduct.getName() + "가 장바구니에 추가되었습니다.");
+            }
+            case 2 -> {
+                System.out.println("\n메인화면으로 돌아갑니다.");
+            }
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
+            }
         }
     }
 
