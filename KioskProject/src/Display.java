@@ -144,7 +144,7 @@ public class Display {
                 addMenu();
                 printAdminMenu();
             }
-//            case 4 -> 
+            case 4 -> printMenuproduct();
             case 5 -> printSalesTotalPrice();
             case 6 -> printSalesTotalProduct();
             case 7 -> printChangeAdminPassword();
@@ -500,7 +500,7 @@ public class Display {
 
     private void printOrderMessage() throws InterruptedException {
         System.out.println("\n요구사항을 입력하세요\n");
-        String message = scanner.next();
+        String message = scanner.nextLine();
         order.setOrderMessage(message);
         printBasket();
     }
