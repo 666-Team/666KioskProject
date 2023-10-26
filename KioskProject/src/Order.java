@@ -44,6 +44,11 @@ public class Order {
         return basket;
     }
 
+    public void addProduct(Product product) {
+        basket.add(product);
+        addPrice(product.getPrice());
+    }
+
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
