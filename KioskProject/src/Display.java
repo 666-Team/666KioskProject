@@ -43,22 +43,18 @@ public class Display {
 
     // 메소드
     void printMain() throws InterruptedException {
-        System.out.println();
-        System.out.println("버커킹 에 오신걸 환영합니다.");
-        System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요");
-        System.out.println();
+
+        System.out.println("\n버커킹 에 오신걸 환영합니다.");
+        System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요\n");
         System.out.println("[ BURGERKING MENU ]");
         for (int i = 0; i < menuList.size(); i++) {
             System.out.println(i + 1 + ". " + menuList.get(i).getName() + " | " + menuList.get(i).getExplain());
         }
-        System.out.println();
-        System.out.println("[ ORDER MENU ]");
+        System.out.println("\n[ ORDER MENU ]");
         System.out.println(menuList.size() + 1 + ". 장바구니 확인");
-        System.out.println(menuList.size() + 2 + ". 주문 취소");
-        System.out.println();
-        Scanner mainScanner = new Scanner(System.in);
-        int number = mainScanner.nextInt();
+        System.out.println(menuList.size() + 2 + ". 주문 취소\n");
 
+        int number = Integer.parseInt(scanner.nextLine());
         if (number == 0) {
             printLoginAdmin();
         } else if (number >= 1 && number <= menuList.size()) {
@@ -83,20 +79,18 @@ public class Display {
         System.out.println();
         System.out.println("[ " + menuName + " MENU ]");
 
-        List<Product> productList = Display.products.get(menuName);
+        List<Product> productList = products.get(menuName);
         for (int i = 0; i < productList.size(); i++) {
             System.out.println(
                     i + 1 + ". " + productList.get(i).getName() + "\t | " + productList.get(i).getPrice()
                             + "\t | " + productList.get(i).getExplain());
         }
 
-        System.out.println();
-        System.out.println("[ ORDER MENU ]");
+        System.out.println("\n[ ORDER MENU ]");
         System.out.println(productList.size() + 1 + ". 장바구니 확인");
-        System.out.println(productList.size() + 2 + ". 주문 취소");
-        System.out.println();
+        System.out.println(productList.size() + 2 + ". 주문 취소\n");
 
-        int setOrder = scanner.nextInt();
+        int setOrder = Integer.parseInt(scanner.nextLine());
         if (setOrder >= 1 && setOrder <= productList.size()) {
             printAddBasket(productList.get(setOrder - 1));
         } else if (setOrder == productList.size() + 1) {
@@ -109,118 +103,106 @@ public class Display {
     }
 
     void printLoginAdmin() throws InterruptedException {
-        System.out.println();
-        System.out.println("[ ONLY ADMIN ]");
-        System.out.println();
-        System.out.println("1. 비밀번호 입력  2.돌아가기");
-        System.out.println();
-        int mainSelect = scanner.nextInt();
-        if (mainSelect == 1) {
-            System.out.println();
-            System.out.println("[ 비밀번호를 입력하세요 ]");
-            System.out.println();
-            int passwordInput = scanner.nextInt();
-            if (passwordInput == password) {
-                printAdminMenu();
-            } else {
+
+        System.out.println("\n[ ONLY ADMIN ]\n");
+        System.out.println("1. 비밀번호 입력  2.돌아가기\n");
+
+        int mainSelect = Integer.parseInt(scanner.nextLine());
+        switch (mainSelect) {
+            case 1 -> {
+                System.out.println("\n[ 비밀번호를 입력하세요 ]\n");
+                int passwordInput = Integer.parseInt(scanner.nextLine());
+                if (passwordInput == password) {
+                    printAdminMenu();
+                } else {
+                    System.out.println("\n비밀번호를 틀렸습니다.");
+                    printLoginAdmin();
+                }
+            }
+            case 2 -> {
                 System.out.println();
-                System.out.println("비밀번호를 틀렸습니다.");
+                System.out.println("메인화면으로 돌아갑니다.");
+            }
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
                 printLoginAdmin();
             }
-        } else if (mainSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        } else {
-            System.out.println("잘못된 값을 입력했습니다.");
-            printLoginAdmin();
         }
     }
 
     void printAdminMenu() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("[ ADMIN MENU ]");
-        System.out.println();
+
+        System.out.println("\n[ ADMIN MENU ]\n");
         System.out.println("1. 대기 주문 목록 조회  2. 완료 주문 목록 조회 3. 메뉴 및 상품 추가  4. 메뉴 및 상품 삭제");
         System.out.println("5. 총 판매 금액 현황 6. 총 판매 상품 현황 7. 비밀번호 변경  8. 돌아가기");
-        int mainSelect = mainScanner.nextInt();
-        if (mainSelect == 1) {
-            printSalesTotalPrice();
-        } else if (mainSelect == 2) {
-            printSalesTotalProduct();
-        } else if (mainSelect == 3) {
-            addMenu();
-            printAdminMenu();
-        } else if (mainSelect == 4) {
-            setAdminPassword();
-        } else if (mainSelect == 5) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        } else if (mainSelect == 5) {
-            printWaitingOrderAndScanner();
-        } else {
-            System.out.println();
-            System.out.println("잘못된 값을 입력했습니다.");
-            printAdminMenu();
+
+        int mainSelect = Integer.parseInt(scanner.nextLine());
+        switch (mainSelect) {
+            case 1 -> printWaitingOrderAndScanner();
+            case 2 -> printCompletedOrderList();
+            case 3 -> {
+                addMenu();
+                printAdminMenu();
+            }
+//            case 4 -> 
+            case 5 -> printSalesTotalPrice();
+            case 6 -> printSalesTotalProduct();
+            case 7 -> printChangeAdminPassword();
+            case 8 -> printMain();
+            default -> {
+                System.out.println("\n잘못된 값을 입력했습니다.");
+                printAdminMenu();
+            }
         }
     }
 
     void printSalesTotalPrice() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("[ 총 판매 금액 현황 ]");
-        System.out.println();
-        System.out.println("현재까지 총 판매된 금액은 [ " + getSaleTotalPrice() + " ] 입니다.");
-        System.out.println();
-        System.out.println("1. ADMIN MENU로 돌아가기  2. 메인으로 돌아가기");
-        System.out.println();
-        int mainSelect = mainScanner.nextInt();
-        if (mainSelect == 1) {
-            printAdminMenu();
-        } else if (mainSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        } else {
-            System.out.println("잘못된 값을 입력했습니다.");
-            printSalesTotalPrice();
+
+        System.out.println("\n[ 총 판매 금액 현황 ]\n");
+        System.out.println("현재까지 총 판매된 금액은 [ " + getSaleTotalPrice() + " ] 입니다.\n");
+        System.out.println("1. ADMIN MENU로 돌아가기  2. 메인으로 돌아가기\n");
+
+        int mainSelect = Integer.parseInt(scanner.nextLine());
+        switch (mainSelect) {
+            case 1 -> printAdminMenu();
+            case 2 -> printMain();
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
+                printSalesTotalPrice();
+            }
         }
     }
 
     void printSalesTotalProduct() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("[ 총 판매상품 목록 현황 ]");
-        System.out.println();
-        System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.");
-        System.out.println();
+
+        System.out.println("\n[ 총 판매상품 목록 현황 ]\n");
+        System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
+
         for (Order order : orderList) {
             for (Product product : order.getBasket()) {
                 System.out.println(
                         "- " + product.getName() + "\t | " + product.getPrice());
             }
         }
-        System.out.println();
-        System.out.println("1. ADMIN MENU로 돌아가기  2. 메인으로 돌아가기");
-        System.out.println();
-        int mainSelect = mainScanner.nextInt();
-        if (mainSelect == 1) {
-            printAdminMenu();
-        } else if (mainSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        } else {
-            System.out.println("잘못된 값을 입력했습니다.");
-            printSalesTotalPrice();
+
+        System.out.println("\n1. ADMIN MENU로 돌아가기  2. 메인으로 돌아가기\n");
+        int mainSelect = Integer.parseInt(scanner.nextLine());
+        switch (mainSelect) {
+            case 1 -> printAdminMenu();
+            case 2 -> printMain();
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
+                printSalesTotalPrice();
+            }
         }
     }
 
     void addMenu() throws InterruptedException {
         System.out.println("어떤 항목을 추가하시겠습니까?");
         System.out.println("1.메뉴        2.상품       3.돌아가기");
-        int num = scanner.nextInt();
+        int num = Integer.parseInt(scanner.nextLine());
         if (num == 1) {
             System.out.println("\n메뉴 이름을 입력해 주세요.");
-            Scanner scanner = new Scanner(System.in);
             String name = scanner.nextLine();
 
             System.out.println("\n메뉴 설명을 입력해주세요.");
@@ -236,7 +218,7 @@ public class Display {
             for (int i = 0; i < menuList.size(); i++) {
                 System.out.println(i + 1 + ". " + menuList.get(i).getName());
             }
-            int menuNum = scanner.nextInt();
+            int menuNum = Integer.parseInt(scanner.nextLine());
 
             Scanner scanner = new Scanner(System.in);
             System.out.println(menuList.get(menuNum - 1).getName() + "이(가) 선택 되었습니다.");
@@ -247,7 +229,7 @@ public class Display {
             String explain = scanner.nextLine();
 
             System.out.println("\n가격을 입력해주세요.");
-            double price = scanner.nextInt();
+            double price = Integer.parseInt(scanner.nextLine());
 
             String menuName = menuList.get(menuNum - 1).getName();
             List<Product> newList = products.get(menuName);
@@ -259,37 +241,21 @@ public class Display {
         }
     }
 
-    void setAdminPassword() throws InterruptedException {
-        Scanner mainScanner = new Scanner(System.in);
-        System.out.println();
-        System.out.println("[ ADMIN 비밀번호 변경 ]");
-        System.out.println();
-        System.out.println("1. 비밀번호 변경하기  2. ADMIN MENU로 돌아가기");
-        System.out.println();
-        int mainSelect = mainScanner.nextInt();
-        if (mainSelect == 1) {
-            System.out.println();
-            System.out.println("[ ADMIN 비밀번호 변경 ]");
-            System.out.println();
-            System.out.print("현재 비밀번호 입력: ");
-            int inputPassword = mainScanner.nextInt();
-            if (inputPassword == password) {
-                System.out.println();
-                System.out.println("[ ADMIN 비밀번호 변경 ]");
-                System.out.println();
-                System.out.print("변경할 비밀번호 입력: ");
-                password = mainScanner.nextInt();
-                printAdminMenu();
-            } else {
-                System.out.println();
-                System.out.println("비밀번호를 틀렸습니다.");
-                setAdminPassword();
-            }
-        } else if (mainSelect == 2) {
+    void printChangeAdminPassword() throws InterruptedException {
+
+        System.out.println("\n[ ADMIN 비밀번호 변경 ]\n");
+        System.out.print("현재 비밀번호 입력: ");
+
+        int inputPassword = Integer.parseInt(scanner.nextLine());
+        if (inputPassword == password) {
+            System.out.println("\n[ ADMIN 비밀번호 변경 ]\n");
+            System.out.print("변경할 비밀번호 입력: ");
+            password = Integer.parseInt(scanner.nextLine());
             printAdminMenu();
-        } else {
-            System.out.println("잘못된 값을 입력했습니다.");
-            setAdminPassword();
+        }else {
+            System.out.println();
+            System.out.println("비밀번호를 틀렸습니다.");
+            printChangeAdminPassword();
         }
     }
 
@@ -300,7 +266,7 @@ public class Display {
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인  2. 취소");
         System.out.println();
-        int orderSelect = scanner.nextInt();
+        int orderSelect = Integer.parseInt(scanner.nextLine());
         if (orderSelect == 1) {
             List<Product> basket = order.getBasket();
             basket.add(orderProduct);
@@ -336,7 +302,7 @@ public class Display {
         System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
         System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
         System.out.println();
-        int orderSelect = scanner.nextInt();
+        int orderSelect = Integer.parseInt(scanner.nextLine());
         if (orderSelect == 1) {
             List<Product> basket = order.getBasket();
             if (basket.isEmpty()) {
@@ -357,26 +323,25 @@ public class Display {
         }
     }
 
-    public void printCancelBasket() {
-        System.out.println();
-        System.out.println("진행하던 주문을 취소하시겠습니까?");
-        System.out.print("1. 확인  2. 취소");
-        System.out.println();
-        int orderSelect = scanner.nextInt();
-        if (orderSelect == 1) {
-            order = new Order();
-            System.out.println();
-            System.out.println("진행하던 주문이 취소되었습니다.");
-        } else if (orderSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
+    public void printCancelBasket() throws InterruptedException {
+        System.out.println("\n진행하던 주문을 취소하시겠습니까?");
+        System.out.print("1. 확인  2. 취소\n");
+
+        int orderSelect = Integer.parseInt(scanner.nextLine());
+        switch (orderSelect){
+            case 1 -> {
+                order = new Order();
+                System.out.println("\n진행하던 주문이 취소되었습니다.");
+            }
+            case 2 -> {
+                System.out.println("\n메인화면으로 돌아갑니다.");
+                printMain();
+            }
         }
     }
 
     private void printCompletedOrder() throws InterruptedException {
-        System.out.println();
-        System.out.println("주문이 완료되었습니다!");
-        System.out.println();
+        System.out.println("\n주문이 완료되었습니다!\n");
         order.setNumber();
         order.setOrderTime();
         orderList.add(order);
@@ -384,14 +349,6 @@ public class Display {
         order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
         Thread.sleep(3000);
-    }
-
-    private static double getSaleTotalPrice() {
-        int saleTotalPrice = 0;
-        for (Order order : orderList) {
-            saleTotalPrice += order.getBasketTotalPrice();
-        }
-        return saleTotalPrice;
     }
 
     private void printWaitingOrderAndScanner() {
@@ -419,7 +376,7 @@ public class Display {
     private void waitingOrderInput() {
         System.out.println("대기중인 주문을 완료 처리하겠습니까?");
         System.out.println("1. 확인  2. 취소");
-        int input = scanner.nextInt();
+        int input = Integer.parseInt(scanner.nextLine());
     }
 
     private void printOrderMessage() throws InterruptedException {
@@ -430,8 +387,8 @@ public class Display {
     }
 
     private void printCompletedOrderList() {
-        System.out.println();
-        System.out.println("[ 완료 주문 목록 ]\n");
+
+        System.out.println("\n[ 완료 주문 목록 ]\n");
         for (Order order : orderList) {
             if (order.getOrderStatus() == OrderStatus.COMPLETED) {
                 System.out.println(
@@ -445,6 +402,14 @@ public class Display {
             System.out.println("총 주문 금액");
             System.out.println(getSaleTotalPrice());
         }
+    }
+
+    private static double getSaleTotalPrice() {
+        int saleTotalPrice = 0;
+        for (Order order : orderList) {
+            saleTotalPrice += order.getBasketTotalPrice();
+        }
+        return saleTotalPrice;
     }
 
 }
