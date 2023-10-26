@@ -44,7 +44,7 @@ public class Order {
         return basket;
     }
 
-    public void productAdd(Product product) {
+    public void addProduct(Product product) {
         basket.add(product);
         addPrice(product.getPrice());
     }
