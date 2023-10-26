@@ -151,7 +151,7 @@ public class Display {
         } else if (mainSelect == 3) {
             addMenu();
             printAdminMenu();
-        }else if(mainSelect == 4){
+        } else if (mainSelect == 4) {
             setAdminPassword();
         } else if (mainSelect == 5) {
             System.out.println();
@@ -213,11 +213,12 @@ public class Display {
             printSalesTotalPrice();
         }
     }
-    void addMenu() throws InterruptedException{
+
+    void addMenu() throws InterruptedException {
         System.out.println("어떤 항목을 추가하시겠습니까?");
         System.out.println("1.메뉴        2.상품       3.돌아가기");
         int num = scanner.nextInt();
-        if(num == 1){
+        if (num == 1) {
             System.out.println("\n메뉴 이름을 입력해 주세요.");
             Scanner scanner = new Scanner(System.in);
             String name = scanner.nextLine();
@@ -230,7 +231,7 @@ public class Display {
 
             System.out.println("\n메뉴 생성 완료!");
 
-        } else if(num == 2){
+        } else if (num == 2) {
             System.out.println("메뉴를 선택해 주세요.");
             for (int i = 0; i < menuList.size(); i++) {
                 System.out.println(i + 1 + ". " + menuList.get(i).getName());
@@ -238,7 +239,7 @@ public class Display {
             int menuNum = scanner.nextInt();
 
             Scanner scanner = new Scanner(System.in);
-            System.out.println(menuList.get(menuNum-1).getName() + "이(가) 선택 되었습니다.");
+            System.out.println(menuList.get(menuNum - 1).getName() + "이(가) 선택 되었습니다.");
             System.out.println("\n상품 이름을 입력해 주세요.");
             String name = scanner.nextLine();
 
@@ -253,10 +254,11 @@ public class Display {
             newList.add(new Product(name, explain, price));
 
             System.out.println("\n상품 생성 완료!");
-        }else if(num == 3){
+        } else if (num == 3) {
             printAdminMenu();
         }
     }
+
     void setAdminPassword() throws InterruptedException {
         Scanner mainScanner = new Scanner(System.in);
         System.out.println();
@@ -331,7 +333,7 @@ public class Display {
         System.out.println();
         System.out.println("[ Total ]");
         System.out.println(order.getBasketTotalPrice());
-        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage()+"\n");
+        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
         System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
         System.out.println();
         int orderSelect = scanner.nextInt();
@@ -344,9 +346,11 @@ public class Display {
             } else {
                 printCompletedOrder();
             }
-        } if (orderSelect == 2) {
+        }
+        if (orderSelect == 2) {
             printOrderMessage();
-        } if (orderSelect == 3) {
+        }
+        if (orderSelect == 3) {
             order = new Order();
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
@@ -400,7 +404,8 @@ public class Display {
         System.out.println("[ 대기 주문 목록 ]\n");
         for (Order order : orderList) {
             if (order.getOrderStatus() == OrderStatus.WAITING) {
-                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.orderTime);
+                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
+                        + order.getOrderTime());
                 for (Product product : order.getBasket()) {
                     System.out.println("- " + product.getName());
                 }
@@ -422,6 +427,24 @@ public class Display {
         String message = scanner.next();
         order.setOrderMessage(message);
         printBasket();
+    }
+
+    private void printCompletedOrderList() {
+        System.out.println();
+        System.out.println("[ 완료 주문 목록 ]\n");
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+                System.out.println(
+                        order.getNumber() + "번 완료 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.getOrderTime()
+                                + "\t | " + order.getOrderCompleteTime());
+                for (Product product : order.getBasket()) {
+                    System.out.println("- " + product.getName());
+                }
+                System.out.println("--------------------------------------------------");
+            }
+            System.out.println("총 주문 금액");
+            System.out.println(getSaleTotalPrice());
+        }
     }
 
 }

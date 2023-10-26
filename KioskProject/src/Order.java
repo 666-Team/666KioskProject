@@ -18,9 +18,9 @@ public class Order {
 
     private OrderStatus orderStatus;
 
-    LocalDateTime orderTime;
+    private LocalDateTime orderTime;
 
-    LocalDateTime orderCompleteTime;
+    private LocalDateTime orderCompleteTime;
 
     //생성자
 
@@ -61,8 +61,16 @@ public class Order {
         this.message = message;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+
+    public LocalDateTime getOrderCompleteTime() {
+        return orderCompleteTime;
     }
 
     public void addPrice(double price) {
