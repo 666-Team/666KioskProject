@@ -241,7 +241,7 @@ public class Display {
         String explain = scanner.nextLine();
 
         System.out.println("\n가격을 입력해주세요.");
-        double price = scanner.nextInt();
+        double price = Double.parseDouble(scanner.nextLine());
 
         String menuName = menuList.get(menuNum - 1).getName();
         List<Product> newList = products.get(menuName);
