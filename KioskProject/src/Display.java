@@ -248,7 +248,7 @@ public class Display {
         for (int i = 0; i < menuList.size(); i++) {
             System.out.println(i + 1 + ". " + menuList.get(i).getName());
         }
-        int menuNum = scanner.nextInt();
+        int menuNum = Integer.parseInt(scanner.nextLine());
         System.out.println("\n" + menuList.get(menuNum - 1).getName() + " 이(가) 선택 되었습니다.");
         System.out.println("\n상품 이름을 입력해 주세요.");
         String name = scanner.nextLine();
