@@ -57,7 +57,7 @@ public class Order {
         orderTime = LocalDateTime.now();
     }
 
-    public void setOrderMessage(String message) {
+    public void saveOrderMessage(String message) {
         this.message = message;
     }
 
