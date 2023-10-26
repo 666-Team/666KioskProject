@@ -405,7 +405,6 @@ public class Display {
             printOrderMessage();
         }
         if (orderSelect == 3) {
-            order = new Order();
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
         }
