@@ -409,20 +409,20 @@ public class Display {
         System.out.println("총 주문 금액");
         System.out.println(getSaleTotalPrice());
         System.out.println("\n1. 대기 주문 완료 처리 하기  2. ADMIN MENU로 돌아가기\n");
-        int input = scanner.nextInt();
-        if (input == 1) {
-            waitingOrderInput();
-        } else if (input == 2) {
-            printAdminMenu();
-        } else {
-            System.out.println("잘못된 값을 입력했습니다.");
-            printWaitingOrder();
+        int input = Integer.parseInt(scanner.nextLine());
+        switch (input) {
+            case 1 -> waitingOrderInput();
+            case 2 -> printAdminMenu();
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
+                printWaitingOrder();
+            }
         }
     }
 
     private void waitingOrderInput() throws InterruptedException {
-        System.out.println("\n완료처리할 대기 주문 번호 입력\n");
-        int input = scanner.nextInt();
+        System.out.println("\n완료 처리 할 대기 주문 번호 입력\n");
+        int input = Integer.parseInt(scanner.nextLine());
         for (Order order : orderList) {
             if (input == order.getNumber()) {
                 order.setOrderStatusCompleted();
