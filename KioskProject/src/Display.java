@@ -73,10 +73,9 @@ public class Display {
         Menu menu = menuList.get(number - 1);
         String menuName = menu.getName();
 
-        System.out.println();
-        System.out.println("버커킹 에 오신걸 환영합니다.");
-        System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요");
-        System.out.println();
+        System.out.println("\n버커킹 에 오신걸 환영합니다.");
+        System.out.println("아래 상품메뉴판을 보시고 상품을 골라 입력해주세요\n");
+
         System.out.println("[ " + menuName + " MENU ]");
 
         List<Product> productList = products.get(menuName);
@@ -124,9 +123,8 @@ public class Display {
 
     public void printBasket() throws InterruptedException {
 
-        System.out.println();
         // 주문 내역 확인 및 토탈 가격 확인
-        System.out.println("[ Orders ]");
+        System.out.println("\n[ Orders ]");
         if (order.getBasket().isEmpty()) {
             {
                 System.out.println("장바구니가 비어있습니다.");
@@ -141,18 +139,15 @@ public class Display {
                 order.addPrice(price);
             }
         }
-        System.out.println();
-        System.out.println("[ Total ]");
+        System.out.println("\n[ Total ]");
         System.out.println(order.getBasketTotalPrice());
         System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
-        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
-        System.out.println();
+        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판\n");
         int orderSelect = Integer.parseInt(scanner.nextLine());
         if (orderSelect == 1) {
             List<Product> basket = order.getBasket();
             if (basket.isEmpty()) {
-                System.out.println();
-                System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
+                System.out.println("\n장바구니가 비어있어서 주문을 할 수 없습니다.");
                 printBasket();
             } else {
                 printCompletedOrder();
@@ -163,8 +158,7 @@ public class Display {
         }
         if (orderSelect == 3) {
             order = new Order();
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
+            System.out.println("\n메인화면으로 돌아갑니다.");
         }
     }
 
