@@ -357,7 +357,7 @@ public class Display {
         System.out.println("\n상품 생성 완료!");
     }
 
-    void printMenuproduct() {
+    void printMenuAndProduct() {
 
         System.out.println("1. 메뉴삭제 2. 상품삭제");
         int select = Integer.parseInt(scanner.nextLine());
