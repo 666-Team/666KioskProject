@@ -357,6 +357,7 @@ public class Display {
         if (orderSelect == 1) {
             List<Product> basket = order.getBasket();
             basket.add(orderProduct);
+            order.addPrice(orderProduct.getPrice());
             System.out.println();
             System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
         } else if (orderSelect == 2) {
@@ -381,7 +382,6 @@ public class Display {
                 String name = product.getName();
                 String explain = product.getExplain();
                 System.out.println(name + " | " + price + " | " + explain);
-                order.addPrice(price);
             }
         }
         System.out.println();
