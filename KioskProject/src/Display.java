@@ -110,7 +110,7 @@ public class Display {
         int orderSelect = Integer.parseInt(scanner.nextLine());
         switch (orderSelect) {
             case 1 -> {
-                order.productAdd(orderProduct);
+                order.addProduct(orderProduct);
                 System.out.println("\n" + orderProduct.getName() + "가 장바구니에 추가되었습니다.");
             }
             case 2 -> {
