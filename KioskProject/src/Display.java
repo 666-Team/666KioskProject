@@ -152,7 +152,7 @@ public class Display {
             addMenu();
             printAdminMenu();
         } else if (mainSelect == 4) {
-            setAdminPassword();
+            printMenuproduct();
         } else if (mainSelect == 5) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
@@ -292,6 +292,83 @@ public class Display {
             setAdminPassword();
         }
     }
+
+    void deleteProduct() {
+
+        int delId = Integer.parseInt(scanner.nextLine());
+        for (Menu menu : menuList) {
+            String menuName = menu.getName();
+            List<Product> productList = Display.products.get(menuName);
+            for (int i = 0; i < productList.size(); i++) {
+                Product product = productList.get(i);
+                if (product.getId() == delId) {
+                    System.out.println("ID : " + product.getId() + "\t | " + product.getName()
+                            + "\t | " + product.getPrice() + "\t | " + product.getExplain()
+                            + "상품이 삭제되었습니다.");
+                    productList.remove(i);
+                }
+                else{
+                    System.out.println("잘못된 ID 입니다.");
+                }
+            }
+        }
+    }
+
+    void deleteMenu() {
+
+        int delId = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < menuList.size(); i++) {
+            Menu menu = menuList.get(i);
+            if (menu.getId() == delId) {
+                System.out.println(
+                        "ID : " + menu.getId() + "\t | " + menu.getName()
+                                + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
+                menuList.remove(i);
+                products.remove(menu.getName());
+            }
+            else{
+                System.out.println("잘못된 ID 입니다.");
+            }
+        }
+    }
+
+    void printMenuproduct() {
+
+        System.out.println("1. 메뉴삭제 2. 상품삭제");
+        int select = Integer.parseInt(scanner.nextLine());
+        switch (select) {
+            case 1 -> printMenu();
+            case 2 -> printProduct();
+            default -> System.out.println("잘못된 입력입니다.");
+        }
+    }
+
+    void printMenu() {
+
+        for (Menu value : menuList) {
+            System.out.println(
+                    "ID : " + value.getId() + "\t | " + value.getName()
+                            + "\t | " + value.getExplain());
+        }
+        System.out.println("삭제할 메뉴 ID: ");
+        deleteMenu();
+    }
+
+    void printProduct() {
+
+        for (Menu menu : menuList) {
+            String menuName = menu.getName();
+            List<Product> productList = Display.products.get(menuName);
+            for (Product product : productList) {
+                System.out.println(
+                        "ID : " + product.getId() + "\t | " + product.getName()
+                                + "\t | " + product.getPrice() + "\t | " + product.getExplain());
+            }
+        }
+        System.out.println("삭제할 상품 ID: ");
+        deleteProduct();
+    }
+
 
     public void printAddBasket(Product orderProduct) {
         System.out.println();
