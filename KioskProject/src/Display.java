@@ -103,16 +103,16 @@ public class Display {
 
     public void printAddBasket(Product orderProduct) {
 
-        System.out.println();
-        System.out.println(
+        System.out.println("\n" +
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
-        System.out.println("1. 확인  2. 취소");
-        System.out.println();
+        System.out.println("1. 확인  2. 취소\n");
         int orderSelect = Integer.parseInt(scanner.nextLine());
         if (orderSelect == 1) {
+          // TODO Order.class 에서 메서드로 구현하기 (캡슐화)
             List<Product> basket = order.getBasket();
             basket.add(orderProduct);
+            order.addPrice(orderProduct.getPrice());        
             System.out.println();
             System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
         } else if (orderSelect == 2) {
@@ -136,7 +136,6 @@ public class Display {
                 String name = product.getName();
                 String explain = product.getExplain();
                 System.out.println(name + " | " + price + " | " + explain);
-                order.addPrice(price);
             }
         }
         System.out.println("\n[ Total ]");
@@ -157,7 +156,6 @@ public class Display {
             printOrderMessage();
         }
         if (orderSelect == 3) {
-            order = new Order();
             System.out.println("\n메인화면으로 돌아갑니다.");
         }
     }
