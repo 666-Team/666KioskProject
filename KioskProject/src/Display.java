@@ -465,6 +465,7 @@ public class Display {
                             + "상품이 삭제되었습니다.");
                     productList.remove(i);
                     isRemoved = true;
+                    break;
                 }
             }
         }
@@ -486,6 +487,7 @@ public class Display {
                 menuList.remove(i);
                 products.remove(menu.getName());
                 isRemoved = true;
+                break;
             }
         }
         if (!isRemoved) {
@@ -594,7 +596,7 @@ public class Display {
 
     private static double getSaleTotalPrice() {
 
-        int saleTotalPrice = 0;
+        double saleTotalPrice = 0;
         for (Order currentOrder : orderList) {
             saleTotalPrice += currentOrder.getBasketTotalPrice();
         }
