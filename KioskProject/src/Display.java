@@ -203,7 +203,7 @@ public class Display {
         System.out.println("1.메뉴        2.상품       3.돌아가기");
 
         int num = Integer.parseInt(scanner.nextLine());
-        switch(num){
+        switch (num) {
             case 1 -> printAddMenu();
             case 2 -> printAddProduct();
             case 3 -> printAdminMenu();
@@ -225,7 +225,7 @@ public class Display {
         System.out.println("\n메뉴 생성 완료!");
     }
 
-    void printAddProduct(){
+    void printAddProduct() {
 
         System.out.println("\n메뉴를 선택해 주세요.");
 
@@ -261,7 +261,7 @@ public class Display {
             System.out.print("변경할 비밀번호 입력: ");
             password = Integer.parseInt(scanner.nextLine());
             printAdminMenu();
-        }else {
+        } else {
             System.out.println();
             System.out.println("비밀번호를 틀렸습니다.");
             printChangeAdminPassword();
@@ -281,8 +281,7 @@ public class Display {
                             + "\t | " + product.getPrice() + "\t | " + product.getExplain()
                             + "상품이 삭제되었습니다.");
                     productList.remove(i);
-                }
-                else{
+                } else {
                     System.out.println("잘못된 ID 입니다.");
                 }
             }
@@ -300,8 +299,7 @@ public class Display {
                                 + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
                 menuList.remove(i);
                 products.remove(menu.getName());
-            }
-            else{
+            } else {
                 System.out.println("잘못된 ID 입니다.");
             }
         }
@@ -346,7 +344,7 @@ public class Display {
 
 
     public void printAddBasket(Product orderProduct) {
-      
+
         System.out.println();
         System.out.println(
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
@@ -366,7 +364,7 @@ public class Display {
     }
 
     public void printBasket() throws InterruptedException {
-      
+
         System.out.println();
         // 주문 내역 확인 및 토탈 가격 확인
         System.out.println("[ Orders ]");
@@ -412,12 +410,12 @@ public class Display {
     }
 
     public void printCancelBasket() throws InterruptedException {
-      
+
         System.out.println("\n진행하던 주문을 취소하시겠습니까?");
         System.out.print("1. 확인  2. 취소\n");
 
         int orderSelect = Integer.parseInt(scanner.nextLine());
-        switch (orderSelect){
+        switch (orderSelect) {
             case 1 -> {
                 order = new Order();
                 System.out.println("\n진행하던 주문이 취소되었습니다.");
@@ -430,7 +428,7 @@ public class Display {
     }
 
     private void printCompletedOrder() throws InterruptedException {
-      
+
         System.out.println("\n주문이 완료되었습니다!\n");
         order.setNumber();
         order.setOrderTime();
@@ -442,7 +440,7 @@ public class Display {
     }
 
     private static double getSaleTotalPrice() {
-      
+
         int saleTotalPrice = 0;
         for (Order order : orderList) {
             saleTotalPrice += order.getBasketTotalPrice();
@@ -451,7 +449,7 @@ public class Display {
     }
 
     private void printWaitingOrder() throws InterruptedException {
-      
+
         System.out.println("\n[ 대기 주문 목록 ]\n");
 
         for (Order order : orderList) {
@@ -488,13 +486,17 @@ public class Display {
 
         for (Order order : orderList) {
             if (input == order.getNumber()) {
-                order.setOrderStatusCompleted();
-                order.setOrderCompletedTime();
+                if (order.getOrderStatus() == OrderStatus.WAITING) {
+                    order.changeWaitingToCompleted();
+                    System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
+                } else {
+                    System.out.println("잘못된 값을 입력했습니다.");
+                    printWaitingOrder();
+                }
+            } else if (input != order.getNumber()) {
+                System.out.println("잘못된 값을 입력했습니다.");
             }
         }
-
-        System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
-
         printWaitingOrder();
     }
 
