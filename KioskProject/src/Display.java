@@ -102,6 +102,102 @@ public class Display {
         }
     }
 
+    public void printAddBasket(Product orderProduct) {
+
+        System.out.println();
+        System.out.println(
+                orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
+        System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
+        System.out.println("1. 확인  2. 취소");
+        System.out.println();
+        int orderSelect = Integer.parseInt(scanner.nextLine());
+        if (orderSelect == 1) {
+            List<Product> basket = order.getBasket();
+            basket.add(orderProduct);
+            System.out.println();
+            System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
+        } else if (orderSelect == 2) {
+            System.out.println();
+            System.out.println("메인화면으로 돌아갑니다.");
+        }
+    }
+
+    public void printBasket() throws InterruptedException {
+
+        System.out.println();
+        // 주문 내역 확인 및 토탈 가격 확인
+        System.out.println("[ Orders ]");
+        if (order.getBasket().isEmpty()) {
+            {
+                System.out.println("장바구니가 비어있습니다.");
+            }
+        } else {
+            List<Product> basket = order.getBasket();
+            for (Product product : basket) {
+                double price = product.getPrice();
+                String name = product.getName();
+                String explain = product.getExplain();
+                System.out.println(name + " | " + price + " | " + explain);
+                order.addPrice(price);
+            }
+        }
+        System.out.println();
+        System.out.println("[ Total ]");
+        System.out.println(order.getBasketTotalPrice());
+        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
+        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
+        System.out.println();
+        int orderSelect = Integer.parseInt(scanner.nextLine());
+        if (orderSelect == 1) {
+            List<Product> basket = order.getBasket();
+            if (basket.isEmpty()) {
+                System.out.println();
+                System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
+                printBasket();
+            } else {
+                printCompletedOrder();
+            }
+        }
+        if (orderSelect == 2) {
+            printOrderMessage();
+        }
+        if (orderSelect == 3) {
+            order = new Order();
+            System.out.println();
+            System.out.println("메인화면으로 돌아갑니다.");
+        }
+    }
+
+    public void printCancelBasket() throws InterruptedException {
+
+        System.out.println("\n진행하던 주문을 취소하시겠습니까?");
+        System.out.print("1. 확인  2. 취소\n");
+
+        int orderSelect = Integer.parseInt(scanner.nextLine());
+        switch (orderSelect) {
+            case 1 -> {
+                order = new Order();
+                System.out.println("\n진행하던 주문이 취소되었습니다.");
+            }
+            case 2 -> {
+                System.out.println("\n메인화면으로 돌아갑니다.");
+                printMain();
+            }
+        }
+    }
+
+    private void printCompletedOrder() throws InterruptedException {
+
+        System.out.println("\n주문이 완료되었습니다!\n");
+        order.setNumber();
+        order.setOrderTime();
+        orderList.add(order);
+        System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
+        order = new Order();
+        System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
+        Thread.sleep(3000);
+    }
+
     void printLoginAdmin() throws InterruptedException {
 
         System.out.println("\n[ ONLY ADMIN ]\n");
@@ -156,6 +252,159 @@ public class Display {
         }
     }
 
+    private void printWaitingOrder() throws InterruptedException {
+
+        System.out.println("\n[ 대기 주문 목록 ]\n");
+
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.WAITING) {
+                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
+                        + order.getOrderTime());
+                for (Product product : order.getBasket()) {
+                    System.out.println("- " + product.getName());
+                }
+                System.out.println("--------------------------------------------------");
+            }
+        }
+
+        System.out.println("총 주문 금액");
+        System.out.println(getSaleTotalPrice());
+        System.out.println("\n1. 대기 주문 완료 처리 하기  2. ADMIN MENU로 돌아가기\n");
+
+        int input = Integer.parseInt(scanner.nextLine());
+        switch (input) {
+            case 1 -> waitingOrderInput();
+            case 2 -> printAdminMenu();
+            default -> {
+                System.out.println("잘못된 값을 입력했습니다.");
+                printWaitingOrder();
+            }
+        }
+    }
+
+    private void waitingOrderInput() throws InterruptedException {
+
+        System.out.println("\n완료 처리 할 대기 주문 번호 입력\n");
+
+        int input = Integer.parseInt(scanner.nextLine());
+
+        for (Order order : orderList) {
+            if (input == order.getNumber()) {
+                order.setOrderStatusCompleted();
+                order.setOrderCompletedTime();
+            }
+        }
+
+        System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
+
+        printWaitingOrder();
+    }
+
+    private void printCompletedOrderList() {
+
+        System.out.println("\n[ 완료 주문 목록 ]\n");
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.COMPLETED) {
+                System.out.println(
+                        order.getNumber() + "번 완료 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.getOrderTime()
+                                + "\t | " + order.getOrderCompleteTime());
+                for (Product product : order.getBasket()) {
+                    System.out.println("- " + product.getName());
+                }
+                System.out.println("--------------------------------------------------");
+            }
+            System.out.println("총 주문 금액");
+            System.out.println(getSaleTotalPrice());
+        }
+    }
+
+    void printAddMenu() {
+
+        System.out.println("\n메뉴 이름을 입력해 주세요.");
+        String name = scanner.nextLine();
+
+        System.out.println("\n메뉴 설명을 입력해주세요.");
+        String explain = scanner.nextLine();
+
+        menuList.add(new Menu(name, explain));
+        products.put(name, new ArrayList<>());
+
+        System.out.println("\n메뉴 생성 완료!");
+    }
+
+    void printAddProduct() {
+
+        System.out.println("\n메뉴를 선택해 주세요.");
+
+        for (int i = 0; i < menuList.size(); i++) {
+            System.out.println(i + 1 + ". " + menuList.get(i).getName());
+        }
+        int menuNum = Integer.parseInt(scanner.nextLine());
+        System.out.println("\n" + menuList.get(menuNum - 1).getName() + " 이(가) 선택 되었습니다.");
+        System.out.println("\n상품 이름을 입력해 주세요.");
+        String name = scanner.nextLine();
+
+        System.out.println("\n상품 설명을 입력해주세요.");
+        String explain = scanner.nextLine();
+
+        System.out.println("\n가격을 입력해주세요.");
+        double price = scanner.nextInt();
+
+        String menuName = menuList.get(menuNum - 1).getName();
+        List<Product> newList = products.get(menuName);
+        newList.add(new Product(name, explain, price));
+
+        System.out.println("\n상품 생성 완료!");
+    }
+
+    void printMenuproduct() {
+
+        System.out.println("1. 메뉴삭제 2. 상품삭제");
+        int select = Integer.parseInt(scanner.nextLine());
+        switch (select) {
+            case 1 -> printMenu();
+            case 2 -> printProduct();
+            default -> System.out.println("잘못된 입력입니다.");
+        }
+    }
+
+    void deleteProduct() {
+
+        int delId = Integer.parseInt(scanner.nextLine());
+        for (Menu menu : menuList) {
+            String menuName = menu.getName();
+            List<Product> productList = Display.products.get(menuName);
+            for (int i = 0; i < productList.size(); i++) {
+                Product product = productList.get(i);
+                if (product.getId() == delId) {
+                    System.out.println("ID : " + product.getId() + "\t | " + product.getName()
+                            + "\t | " + product.getPrice() + "\t | " + product.getExplain()
+                            + "상품이 삭제되었습니다.");
+                    productList.remove(i);
+                } else {
+                    System.out.println("잘못된 ID 입니다.");
+                }
+            }
+        }
+    }
+
+    void deleteMenu() {
+
+        int delId = Integer.parseInt(scanner.nextLine());
+        for (int i = 0; i < menuList.size(); i++) {
+            Menu menu = menuList.get(i);
+            if (menu.getId() == delId) {
+                System.out.println(
+                        "ID : " + menu.getId() + "\t | " + menu.getName()
+                                + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
+                menuList.remove(i);
+                products.remove(menu.getName());
+            } else {
+                System.out.println("잘못된 ID 입니다.");
+            }
+        }
+    }
+
     void printSalesTotalPrice() throws InterruptedException {
 
         System.out.println("\n[ 총 판매 금액 현황 ]\n");
@@ -203,51 +452,12 @@ public class Display {
         System.out.println("1.메뉴        2.상품       3.돌아가기");
 
         int num = Integer.parseInt(scanner.nextLine());
-        switch(num){
+        switch (num) {
             case 1 -> printAddMenu();
             case 2 -> printAddProduct();
             case 3 -> printAdminMenu();
             default -> System.out.println("\n잘못된 입력입니다.");
         }
-    }
-
-    void printAddMenu() {
-
-        System.out.println("\n메뉴 이름을 입력해 주세요.");
-        String name = scanner.nextLine();
-
-        System.out.println("\n메뉴 설명을 입력해주세요.");
-        String explain = scanner.nextLine();
-
-        menuList.add(new Menu(name, explain));
-        products.put(name, new ArrayList<>());
-
-        System.out.println("\n메뉴 생성 완료!");
-    }
-
-    void printAddProduct(){
-
-        System.out.println("\n메뉴를 선택해 주세요.");
-
-        for (int i = 0; i < menuList.size(); i++) {
-            System.out.println(i + 1 + ". " + menuList.get(i).getName());
-        }
-        int menuNum = Integer.parseInt(scanner.nextLine());
-        System.out.println("\n" + menuList.get(menuNum - 1).getName() + " 이(가) 선택 되었습니다.");
-        System.out.println("\n상품 이름을 입력해 주세요.");
-        String name = scanner.nextLine();
-
-        System.out.println("\n상품 설명을 입력해주세요.");
-        String explain = scanner.nextLine();
-
-        System.out.println("\n가격을 입력해주세요.");
-        double price = scanner.nextInt();
-
-        String menuName = menuList.get(menuNum - 1).getName();
-        List<Product> newList = products.get(menuName);
-        newList.add(new Product(name, explain, price));
-
-        System.out.println("\n상품 생성 완료!");
     }
 
     void printChangeAdminPassword() throws InterruptedException {
@@ -261,60 +471,10 @@ public class Display {
             System.out.print("변경할 비밀번호 입력: ");
             password = Integer.parseInt(scanner.nextLine());
             printAdminMenu();
-        }else {
+        } else {
             System.out.println();
             System.out.println("비밀번호를 틀렸습니다.");
             printChangeAdminPassword();
-        }
-    }
-
-    void deleteProduct() {
-
-        int delId = Integer.parseInt(scanner.nextLine());
-        for (Menu menu : menuList) {
-            String menuName = menu.getName();
-            List<Product> productList = Display.products.get(menuName);
-            for (int i = 0; i < productList.size(); i++) {
-                Product product = productList.get(i);
-                if (product.getId() == delId) {
-                    System.out.println("ID : " + product.getId() + "\t | " + product.getName()
-                            + "\t | " + product.getPrice() + "\t | " + product.getExplain()
-                            + "상품이 삭제되었습니다.");
-                    productList.remove(i);
-                }
-                else{
-                    System.out.println("잘못된 ID 입니다.");
-                }
-            }
-        }
-    }
-
-    void deleteMenu() {
-
-        int delId = Integer.parseInt(scanner.nextLine());
-        for (int i = 0; i < menuList.size(); i++) {
-            Menu menu = menuList.get(i);
-            if (menu.getId() == delId) {
-                System.out.println(
-                        "ID : " + menu.getId() + "\t | " + menu.getName()
-                                + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
-                menuList.remove(i);
-                products.remove(menu.getName());
-            }
-            else{
-                System.out.println("잘못된 ID 입니다.");
-            }
-        }
-    }
-
-    void printMenuproduct() {
-
-        System.out.println("1. 메뉴삭제 2. 상품삭제");
-        int select = Integer.parseInt(scanner.nextLine());
-        switch (select) {
-            case 1 -> printMenu();
-            case 2 -> printProduct();
-            default -> System.out.println("잘못된 입력입니다.");
         }
     }
 
@@ -344,158 +504,13 @@ public class Display {
         deleteProduct();
     }
 
-
-    public void printAddBasket(Product orderProduct) {
-      
-        System.out.println();
-        System.out.println(
-                orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
-        System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
-        System.out.println("1. 확인  2. 취소");
-        System.out.println();
-        int orderSelect = Integer.parseInt(scanner.nextLine());
-        if (orderSelect == 1) {
-            List<Product> basket = order.getBasket();
-            basket.add(orderProduct);
-            System.out.println();
-            System.out.println(orderProduct.getName() + "가 장바구니에 추가되었습니다.");
-        } else if (orderSelect == 2) {
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        }
-    }
-
-    public void printBasket() throws InterruptedException {
-      
-        System.out.println();
-        // 주문 내역 확인 및 토탈 가격 확인
-        System.out.println("[ Orders ]");
-        if (order.getBasket().isEmpty()) {
-            {
-                System.out.println("장바구니가 비어있습니다.");
-            }
-        } else {
-            List<Product> basket = order.getBasket();
-            for (Product product : basket) {
-                double price = product.getPrice();
-                String name = product.getName();
-                String explain = product.getExplain();
-                System.out.println(name + " | " + price + " | " + explain);
-                order.addPrice(price);
-            }
-        }
-        System.out.println();
-        System.out.println("[ Total ]");
-        System.out.println(order.getBasketTotalPrice());
-        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
-        System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판");
-        System.out.println();
-        int orderSelect = Integer.parseInt(scanner.nextLine());
-        if (orderSelect == 1) {
-            List<Product> basket = order.getBasket();
-            if (basket.isEmpty()) {
-                System.out.println();
-                System.out.println("장바구니가 비어있어서 주문을 할 수 없습니다.");
-                printBasket();
-            } else {
-                printCompletedOrder();
-            }
-        }
-        if (orderSelect == 2) {
-            printOrderMessage();
-        }
-        if (orderSelect == 3) {
-            order = new Order();
-            System.out.println();
-            System.out.println("메인화면으로 돌아갑니다.");
-        }
-    }
-
-    public void printCancelBasket() throws InterruptedException {
-      
-        System.out.println("\n진행하던 주문을 취소하시겠습니까?");
-        System.out.print("1. 확인  2. 취소\n");
-
-        int orderSelect = Integer.parseInt(scanner.nextLine());
-        switch (orderSelect){
-            case 1 -> {
-                order = new Order();
-                System.out.println("\n진행하던 주문이 취소되었습니다.");
-            }
-            case 2 -> {
-                System.out.println("\n메인화면으로 돌아갑니다.");
-                printMain();
-            }
-        }
-    }
-
-    private void printCompletedOrder() throws InterruptedException {
-      
-        System.out.println("\n주문이 완료되었습니다!\n");
-        order.setNumber();
-        order.setOrderTime();
-        orderList.add(order);
-        System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
-        order = new Order();
-        System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
-        Thread.sleep(3000);
-    }
-
     private static double getSaleTotalPrice() {
-      
+
         int saleTotalPrice = 0;
         for (Order order : orderList) {
             saleTotalPrice += order.getBasketTotalPrice();
         }
         return saleTotalPrice;
-    }
-
-    private void printWaitingOrder() throws InterruptedException {
-      
-        System.out.println("\n[ 대기 주문 목록 ]\n");
-
-        for (Order order : orderList) {
-            if (order.getOrderStatus() == OrderStatus.WAITING) {
-                System.out.println(order.getNumber() + "번 대기 주문 | 요구 사항: " + order.getMessage() + "\t | "
-                        + order.getOrderTime());
-                for (Product product : order.getBasket()) {
-                    System.out.println("- " + product.getName());
-                }
-                System.out.println("--------------------------------------------------");
-            }
-        }
-
-        System.out.println("총 주문 금액");
-        System.out.println(getSaleTotalPrice());
-        System.out.println("\n1. 대기 주문 완료 처리 하기  2. ADMIN MENU로 돌아가기\n");
-
-        int input = Integer.parseInt(scanner.nextLine());
-        switch (input) {
-            case 1 -> waitingOrderInput();
-            case 2 -> printAdminMenu();
-            default -> {
-                System.out.println("잘못된 값을 입력했습니다.");
-                printWaitingOrder();
-            }
-        }
-    }
-
-    private void waitingOrderInput() throws InterruptedException {
-
-        System.out.println("\n완료 처리 할 대기 주문 번호 입력\n");
-
-        int input = Integer.parseInt(scanner.nextLine());
-
-        for (Order order : orderList) {
-            if (input == order.getNumber()) {
-                order.setOrderStatusCompleted();
-                order.setOrderCompletedTime();
-            }
-        }
-
-        System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
-
-        printWaitingOrder();
     }
 
     private void printOrderMessage() throws InterruptedException {
@@ -504,23 +519,4 @@ public class Display {
         order.setOrderMessage(message);
         printBasket();
     }
-
-    private void printCompletedOrderList() {
-
-        System.out.println("\n[ 완료 주문 목록 ]\n");
-        for (Order order : orderList) {
-            if (order.getOrderStatus() == OrderStatus.COMPLETED) {
-                System.out.println(
-                        order.getNumber() + "번 완료 주문 | 요구 사항: " + order.getMessage() + "\t | " + order.getOrderTime()
-                                + "\t | " + order.getOrderCompleteTime());
-                for (Product product : order.getBasket()) {
-                    System.out.println("- " + product.getName());
-                }
-                System.out.println("--------------------------------------------------");
-            }
-            System.out.println("총 주문 금액");
-            System.out.println(getSaleTotalPrice());
-        }
-    }
-
 }
