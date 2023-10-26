@@ -484,18 +484,17 @@ public class Display {
 
         int input = Integer.parseInt(scanner.nextLine());
 
+        boolean isRemoved = false;
         for (Order order : orderList) {
-            if (input == order.getNumber()) {
-                if (order.getOrderStatus() == OrderStatus.WAITING) {
-                    order.changeWaitingToCompleted();
-                    System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
-                } else {
-                    System.out.println("잘못된 값을 입력했습니다.");
-                    printWaitingOrder();
-                }
-            } else if (input != order.getNumber()) {
-                System.out.println("잘못된 값을 입력했습니다.");
+            if (input == order.getNumber() && order.getOrderStatus() == OrderStatus.WAITING) {
+                order.changeWaitingToCompleted();
+                System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
+                isRemoved = true;
+                break;
             }
+        }
+        if (!isRemoved) {
+            System.out.println("잘못된 값을 입력했습니다.");
         }
         printWaitingOrder();
     }
