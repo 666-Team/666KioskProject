@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDateTime;
 
 public class Order {
 
@@ -10,12 +11,16 @@ public class Order {
 
     private double basketTotalPrice = 0;
 
-    private String message;
+    private String message = "미 입력";
 
     // 하위 객체
     private List<Product> basket = new ArrayList<>();
 
     private OrderStatus orderStatus;
+
+    private LocalDateTime orderTime;
+
+    private LocalDateTime orderCompleteTime;
 
     //생성자
 
@@ -39,7 +44,47 @@ public class Order {
         return basket;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setNumber() {
+        orderNumber++;
+        number = orderNumber;
+    }
+
+    public void setOrderTime() {
+        orderTime = LocalDateTime.now();
+    }
+
+    public void setOrderMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+
+    public LocalDateTime getOrderCompleteTime() {
+        return orderCompleteTime;
+    }
+
+    public OrderStatus setOrderStatusCompleted() {
+        this.orderStatus = OrderStatus.COMPLETED;
+        return orderStatus;
+    }
+
+    public LocalDateTime setOrderCompletedTime() {
+        this.orderCompleteTime = LocalDateTime.now();
+        return orderCompleteTime;
+    }
+
     public void addPrice(double price) {
         basketTotalPrice += price;
     }
+
 }
