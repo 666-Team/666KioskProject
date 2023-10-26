@@ -88,7 +88,12 @@ public class Display {
         completedList.sort(Comparator.comparing(Order::getOrderCompleteTime).reversed());
         waitingOrderList.sort(Comparator.comparing(Order::getOrderTime).reversed());
 
-        if (completedList.size() > 0) {
+        printCompletedOrderListLimit3(completedList);
+        printWaitingOrderList(waitingOrderList);
+    }
+
+    private void printCompletedOrderListLimit3(List<Order> completedList) {
+        if (!completedList.isEmpty()) {
             int cnt = 0;
             System.out.println("[ 최근 완료 주문 목록 ]");
             for (Order completedOrder : completedList) {
@@ -103,10 +108,11 @@ public class Display {
                                 + "\t | 주문 완료 일시: " + completedOrder.getOrderCompleteTime());
                 cnt++;
             }
-
         }
+    }
 
-        if (waitingOrderList.size() > 0) {
+    private void printWaitingOrderList(List<Order> waitingOrderList) {
+        if (!waitingOrderList.isEmpty()) {
             System.out.println("\n[ 대기 주문 목록 ]");
             for (Order waitingOrder : waitingOrderList) {
                 List<Product> waitingOrderBasket = waitingOrder.getBasket();
@@ -156,9 +162,9 @@ public class Display {
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인  2. 취소\n");
-      
+
         int orderSelect = Integer.parseInt(scanner.nextLine());
-      
+
         switch (orderSelect) {
             case 1 -> {
                 order.addProduct(orderProduct);
@@ -350,7 +356,7 @@ public class Display {
         List<Order> waitingOrderList = getWaitingOrderList();
 
         boolean isRemoved = false;
-      
+
         for (Order currentOrder : waitingOrderList) {
             if (input == currentOrder.getNumber()) {
                 currentOrder.changeWaitingToCompleted();
@@ -377,7 +383,8 @@ public class Display {
 
         for (Order currentOrder : completedOrderList) {
             System.out.println(
-                    currentOrder.getNumber() + "번 완료 주문 | 요구 사항: " + currentOrder.getMessage() + "\t | " + currentOrder.getOrderTime()
+                    currentOrder.getNumber() + "번 완료 주문 | 요구 사항: " + currentOrder.getMessage() + "\t | "
+                            + currentOrder.getOrderTime()
                             + "\t | " + currentOrder.getOrderCompleteTime());
             for (Product product : currentOrder.getBasket()) {
                 System.out.println("- " + product.getName());
@@ -461,7 +468,7 @@ public class Display {
                 }
             }
         }
-        if(!isRemoved) {
+        if (!isRemoved) {
             System.out.println("잘못된 ID 입니다.");
         }
     }
@@ -481,7 +488,7 @@ public class Display {
                 isRemoved = true;
             }
         }
-        if(!isRemoved) {
+        if (!isRemoved) {
             System.out.println("잘못된 ID 입니다.");
         }
     }
@@ -508,8 +515,8 @@ public class Display {
         System.out.println("\n[ 총 판매상품 목록 현황 ]\n");
         System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
 
-        for (Order  currentOrder : orderList) {
-            for (Product product :  currentOrder.getBasket()) {
+        for (Order currentOrder : orderList) {
+            for (Product product : currentOrder.getBasket()) {
                 System.out.println(
                         "- " + product.getName() + "\t | " + product.getPrice());
             }
@@ -588,8 +595,8 @@ public class Display {
     private static double getSaleTotalPrice() {
 
         int saleTotalPrice = 0;
-        for (Order  currentOrder : orderList) {
-            saleTotalPrice +=  currentOrder.getBasketTotalPrice();
+        for (Order currentOrder : orderList) {
+            saleTotalPrice += currentOrder.getBasketTotalPrice();
         }
         return saleTotalPrice;
     }
