@@ -297,20 +297,23 @@ public class Display {
 
         int input = Integer.parseInt(scanner.nextLine());
 
+        boolean isRemoved = false;
         for (Order order : orderList) {
-            if (input == order.getNumber()) {
-                order.setOrderStatusCompleted();
-                order.setOrderCompletedTime();
+            if (input == order.getNumber() && order.getOrderStatus() == OrderStatus.WAITING) {
+                order.changeWaitingToCompleted();
+                System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
+                isRemoved = true;
+                break;
             }
         }
-
-        System.out.println("\n" + input + "번 주문 완료 처리 되었습니다.\n");
-
+        if (!isRemoved) {
+            System.out.println("잘못된 값을 입력했습니다.");
+        }
         printWaitingOrder();
     }
 
     private void printCompletedOrderList() {
-
+      
         System.out.println("\n[ 완료 주문 목록 ]\n");
         for (Order order : orderList) {
             if (order.getOrderStatus() == OrderStatus.COMPLETED) {
@@ -367,7 +370,7 @@ public class Display {
     }
 
     void printMenuAndProduct() {
-
+      
         System.out.println("1. 메뉴삭제 2. 상품삭제");
         int select = Integer.parseInt(scanner.nextLine());
         switch (select) {
@@ -415,7 +418,6 @@ public class Display {
     }
 
     void printSalesTotalPrice() throws InterruptedException {
-
 
         System.out.println("\n[ 총 판매 금액 현황 ]\n");
         System.out.println("현재까지 총 판매된 금액은 [ " + getSaleTotalPrice() + " ] 입니다.\n");
@@ -513,7 +515,7 @@ public class Display {
         System.out.println("삭제할 상품 ID: ");
         deleteProduct();
     }
-
+  
     private static double getSaleTotalPrice() {
 
         int saleTotalPrice = 0;

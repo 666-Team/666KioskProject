@@ -73,14 +73,9 @@ public class Order {
         return orderCompleteTime;
     }
 
-    public OrderStatus setOrderStatusCompleted() {
-        this.orderStatus = OrderStatus.COMPLETED;
-        return orderStatus;
-    }
-
-    public LocalDateTime setOrderCompletedTime() {
+    public void changeWaitingToCompleted() {
         this.orderCompleteTime = LocalDateTime.now();
-        return orderCompleteTime;
+        this.orderStatus = OrderStatus.COMPLETED;
     }
 
     public void addPrice(double price) {
