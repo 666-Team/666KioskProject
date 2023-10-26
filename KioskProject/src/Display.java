@@ -140,8 +140,8 @@ public class Display {
         System.out.println();
         System.out.println("[ ADMIN MENU ]");
         System.out.println();
-        System.out.println("1. 총 판매 금액 현황  2. 총 판매 상품 현황  3. 비밀번호 변경 4. 상품 삭제 5. 돌아가기");
-        System.out.println();
+        System.out.println("1. 대기 주문 목록 조회  2. 완료 주문 목록 조회 3. 메뉴 및 상품 추가  4. 메뉴 및 상품 삭제");
+        System.out.println("5. 총 판매 금액 현황 6. 총 판매 상품 현황 7. 비밀번호 변경  8. 돌아가기");
         int mainSelect = mainScanner.nextInt();
         if (mainSelect == 1) {
             printSalesTotalPrice();
@@ -150,10 +150,7 @@ public class Display {
         } else if (mainSelect == 3) {
             setAdminPassword();
         } else if (mainSelect == 4) {
-            printProduct();
-            System.out.println("삭제할 상품 ID: ");
-            int delId = scanner.nextInt();
-            deleteMenuproduct(delId);
+            printMenuproduct();
         } else if (mainSelect == 5) {
             System.out.println();
             System.out.println("메인화면으로 돌아갑니다.");
@@ -247,45 +244,62 @@ public class Display {
         }
     }
 
-    void deleteMenuproduct(int delId) {
-        for (int i =0; i < menuList.size(); i++) {
-            if(menuList.get(i).getId()==delId){
-                System.out.println(
-                        "ID : " + menuList.get(i).getId() + "\t | " + menuList.get(i).getName()
-                                + "\t | " + menuList.get(i).getExplain()+"메뉴가 삭제되었습니다.");
-                menuList.remove(i);
-            }
-        }
+    void deleteProduct() {
+        int delId = scanner.nextInt();
         for (Menu menu : menuList) {
             String menuName = menu.getName();
             List<Product> productList = Display.products.get(menuName);
-            for (int k = 0; k < productList.size(); k++) {
-                if (productList.get(k).getId() == delId) {
-                    System.out.println("ID : " + productList.get(k).getId() + "\t | " + productList.get(k).getName()
-                            + "\t | " + productList.get(k).getPrice() + "\t | " + productList.get(k).getExplain()
+            for (int i = 0; i < productList.size(); i++) {
+                Product product = productList.get(i);
+                if (product.getId() == delId) {
+                    System.out.println("ID : " + product.getId() + "\t | " + product.getName()
+                            + "\t | " + product.getPrice() + "\t | " + product.getExplain()
                             + "상품이 삭제되었습니다.");
-                    productList.remove(k);
-
+                    productList.remove(i);
                 }
             }
         }
-
     }
 
-    void printProduct() {
-        for (Menu value : menuList) {
-            System.out.println(
-                    "ID : " + value.getId() + "\t | " + value.getName()
-                            + "\t | " + value.getExplain());
-        }
-        for (Menu menu : menuList) {
-            String menuName = menu.getName();
-            List<Product> productList = Display.products.get(menuName);
-            for (Product product : productList) {
+    void deleteMenu() {
+        int delId = scanner.nextInt();
+        for (int i = 0; i < menuList.size(); i++) {
+            Menu menu = menuList.get(i);
+            if (menu.getId() == delId) {
                 System.out.println(
-                        "ID : " + product.getId() + "\t | " + product.getName()
-                                + "\t | " + product.getPrice() + "\t | " + product.getExplain());
+                        "ID : " + menu.getId() + "\t | " + menu.getName()
+                                + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
+                menuList.remove(i);
+                products.remove(menu.getName());
+
             }
+        }
+    }
+
+    void printMenuproduct() {
+        System.out.println("1. 메뉴삭제 2. 상품삭제");
+        int select = scanner.nextInt();
+        if (select == 1) {
+            for (Menu value : menuList) {
+                System.out.println(
+                        "ID : " + value.getId() + "\t | " + value.getName()
+                                + "\t | " + value.getExplain());
+            }
+            System.out.println("삭제할 메뉴 ID: ");
+            deleteMenu();
+        }
+        if (select == 2) {
+            for (Menu menu : menuList) {
+                String menuName = menu.getName();
+                List<Product> productList = Display.products.get(menuName);
+                for (Product product : productList) {
+                    System.out.println(
+                            "ID : " + product.getId() + "\t | " + product.getName()
+                                    + "\t | " + product.getPrice() + "\t | " + product.getExplain());
+                }
+            }
+            System.out.println("삭제할 상품 ID: ");
+            deleteProduct();
         }
     }
 
