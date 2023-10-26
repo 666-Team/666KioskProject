@@ -170,12 +170,8 @@ public class Display {
                 order.addProduct(orderProduct);
                 System.out.println("\n" + orderProduct.getName() + "가 장바구니에 추가되었습니다.");
             }
-            case 2 -> {
-                System.out.println("\n메인화면으로 돌아갑니다.");
-            }
-            default -> {
-                System.out.println("잘못된 값을 입력했습니다.");
-            }
+            case 2 -> System.out.println("\n메인화면으로 돌아갑니다.");
+            default -> System.out.println("잘못된 값을 입력했습니다.");
         }
     }
 
@@ -280,10 +276,7 @@ public class Display {
                     printLoginAdmin();
                 }
             }
-            case 2 -> {
-                System.out.println();
-                System.out.println("메인화면으로 돌아갑니다.");
-            }
+            case 2 -> System.out.println("\n메인화면으로 돌아갑니다.");
             default -> {
                 System.out.println("잘못된 값을 입력했습니다.");
                 printLoginAdmin();
@@ -333,7 +326,7 @@ public class Display {
         }
 
         System.out.println("총 주문 금액");
-        System.out.println(getSaleTotalPrice());
+        System.out.println(getSaleWaitingTotalPrice());
         System.out.println("\n1. 대기 주문 완료 처리 하기  2. ADMIN MENU로 돌아가기\n");
 
         int input = Integer.parseInt(scanner.nextLine());
@@ -592,6 +585,17 @@ public class Display {
         }
         System.out.println("삭제할 상품 ID: ");
         deleteProduct();
+    }
+
+    private static double getSaleWaitingTotalPrice() {
+
+        double saleTotalPrice = 0;
+        for (Order order : orderList) {
+            if (order.getOrderStatus() == OrderStatus.WAITING) {
+                saleTotalPrice += order.getBasketTotalPrice();
+            }
+        }
+        return saleTotalPrice;
     }
 
     private static double getSaleTotalPrice() {
