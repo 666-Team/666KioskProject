@@ -381,7 +381,7 @@ public class Display {
     void deleteProduct() {
 
         int delId = Integer.parseInt(scanner.nextLine());
-        boolean isremoved = true;
+        boolean isremoved = false;
         for (Menu menu : menuList) {
             String menuName = menu.getName();
             List<Product> productList = Display.products.get(menuName);
@@ -392,11 +392,11 @@ public class Display {
                             + "\t | " + product.getPrice() + "\t | " + product.getExplain()
                             + "상품이 삭제되었습니다.");
                     productList.remove(i);
-                    isremoved = false;
+                    isremoved = true;
                 }
             }
         }
-        if(isremoved) {
+        if(!isremoved) {
             System.out.println("잘못된 ID 입니다.");
         }
     }
@@ -404,7 +404,7 @@ public class Display {
     void deleteMenu() {
 
         int delId = Integer.parseInt(scanner.nextLine());
-        boolean isremoved = true;
+        boolean isremoved = false;
         for (int i = 0; i < menuList.size(); i++) {
             Menu menu = menuList.get(i);
             if (menu.getId() == delId) {
@@ -413,10 +413,10 @@ public class Display {
                                 + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
                 menuList.remove(i);
                 products.remove(menu.getName());
-                isremoved = false;
+                isremoved = true;
             }
         }
-        if(isremoved) {
+        if(!isremoved) {
             System.out.println("잘못된 ID 입니다.");
         }
     }
