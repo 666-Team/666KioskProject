@@ -103,7 +103,7 @@ public class Display {
                 List<Product> completedOrderBasket = completedOrder.getBasket();
                 Product firstProduct = completedOrderBasket.get(0);
                 System.out.println(
-                        completedOrder.getNumber() + "번 완료 주문 | 주문 품목: " + firstProduct.getName() + "등\t | 주문 일시: "
+                        completedOrder.getNumber() + "번 완료 주문 | 주문 품목: " + firstProduct.getName() + " 등...\t | 주문 일시: "
                                 + completedOrder.getOrderTime()
                                 + "\t | 주문 완료 일시: " + completedOrder.getOrderCompleteTime());
                 cnt++;
