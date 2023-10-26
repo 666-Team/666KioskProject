@@ -199,18 +199,10 @@ public class Display {
 
     void addMenu() throws InterruptedException {
 
-        System.out.println("어떤 항목을 추가하시겠습니까?");
-        System.out.println("1.메뉴        2.상품       3.돌아가기");
-        int num = Integer.parseInt(scanner.nextLine());
-        if (num == 1) {
-            System.out.println("\n메뉴 이름을 입력해 주세요.");
-            String name = scanner.nextLine();
-        }
-
         System.out.println("\n어떤 항목을 추가하시겠습니까?");
         System.out.println("1.메뉴        2.상품       3.돌아가기");
 
-        num = Integer.parseInt(scanner.nextLine());
+        int num = Integer.parseInt(scanner.nextLine());
         switch(num){
             case 1 -> printAddMenu();
             case 2 -> printAddProduct();
