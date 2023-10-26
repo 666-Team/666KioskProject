@@ -42,7 +42,7 @@ public class Display {
     }
 
     // 메소드
-    void printMain() throws InterruptedException {
+    public void printMain() throws InterruptedException {
 
         System.out.println("\n버커킹 에 오신걸 환영합니다.");
         System.out.println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요\n");
@@ -68,7 +68,7 @@ public class Display {
         }
     }
 
-    void printProductList(int number) throws InterruptedException {
+    private void printProductList(int number) throws InterruptedException {
 
         Menu menu = menuList.get(number - 1);
         String menuName = menu.getName();
@@ -101,12 +101,13 @@ public class Display {
         }
     }
 
-    public void printAddBasket(Product orderProduct) {
+    private void printAddBasket(Product orderProduct) {
 
         System.out.println("\n" +
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
         System.out.println("위 메뉴를 장바구니에 추가하시겠습니까?");
         System.out.println("1. 확인  2. 취소\n");
+      
         int orderSelect = Integer.parseInt(scanner.nextLine());
         switch (orderSelect) {
             case 1 -> {
@@ -122,7 +123,7 @@ public class Display {
         }
     }
 
-    public void printBasket() throws InterruptedException {
+    private void printBasket() throws InterruptedException {
 
         // 주문 내역 확인 및 토탈 가격 확인
         System.out.println("\n[ Orders ]");
@@ -176,7 +177,7 @@ public class Display {
         return message.length() <= 20;
     }
 
-    public void printCancelBasket() throws InterruptedException {
+    private void printCancelBasket() throws InterruptedException {
 
         System.out.println("\n진행하던 주문을 취소하시겠습니까?");
         System.out.print("1. 확인  2. 취소\n");
@@ -206,7 +207,7 @@ public class Display {
         Thread.sleep(3000);
     }
 
-    void printLoginAdmin() throws InterruptedException {
+    private void printLoginAdmin() throws InterruptedException {
 
         System.out.println("\n[ ONLY ADMIN ]\n");
         System.out.println("1. 비밀번호 입력  2.돌아가기\n");
@@ -234,7 +235,7 @@ public class Display {
         }
     }
 
-    void printAdminMenu() throws InterruptedException {
+    private void printAdminMenu() throws InterruptedException {
 
         System.out.println("\n[ ADMIN MENU ]\n");
         System.out.println("1. 대기 주문 목록 조회  2. 완료 주문 목록 조회 3. 메뉴 및 상품 추가  4. 메뉴 및 상품 삭제");
@@ -329,7 +330,7 @@ public class Display {
         }
     }
 
-    void printAddMenu() {
+    private void printAddMenu() {
 
         System.out.println("\n메뉴 이름을 입력해 주세요.");
         String name = scanner.nextLine();
@@ -343,7 +344,7 @@ public class Display {
         System.out.println("\n메뉴 생성 완료!");
     }
 
-    void printAddProduct() {
+    private void printAddProduct() {
 
         System.out.println("\n메뉴를 선택해 주세요.");
 
@@ -368,7 +369,7 @@ public class Display {
         System.out.println("\n상품 생성 완료!");
     }
 
-    void printMenuAndProduct() {
+    private void printMenuAndProduct() {
 
         System.out.println("1. 메뉴삭제 2. 상품삭제");
         int select = Integer.parseInt(scanner.nextLine());
@@ -379,7 +380,7 @@ public class Display {
         }
     }
 
-    void deleteProduct() {
+    private void deleteProduct() {
 
         int delId = Integer.parseInt(scanner.nextLine());
         for (Menu menu : menuList) {
@@ -399,7 +400,7 @@ public class Display {
         }
     }
 
-    void deleteMenu() {
+    private void deleteMenu() {
 
         int delId = Integer.parseInt(scanner.nextLine());
         for (int i = 0; i < menuList.size(); i++) {
@@ -416,7 +417,7 @@ public class Display {
         }
     }
 
-    void printSalesTotalPrice() throws InterruptedException {
+    private void printSalesTotalPrice() throws InterruptedException {
 
         System.out.println("\n[ 총 판매 금액 현황 ]\n");
         System.out.println("현재까지 총 판매된 금액은 [ " + getSaleTotalPrice() + " ] 입니다.\n");
@@ -433,7 +434,7 @@ public class Display {
         }
     }
 
-    void printSalesTotalProduct() throws InterruptedException {
+    private void printSalesTotalProduct() throws InterruptedException {
 
         System.out.println("\n[ 총 판매상품 목록 현황 ]\n");
         System.out.println("현재까지 총 판매된 상품 목록은 아래와 같습니다.\n");
@@ -457,7 +458,7 @@ public class Display {
         }
     }
 
-    void addMenu() throws InterruptedException {
+    private void addMenu() throws InterruptedException {
 
         System.out.println("\n어떤 항목을 추가하시겠습니까?");
         System.out.println("1.메뉴        2.상품       3.돌아가기");
@@ -471,7 +472,7 @@ public class Display {
         }
     }
 
-    void printChangeAdminPassword() throws InterruptedException {
+    private void printChangeAdminPassword() throws InterruptedException {
 
         System.out.println("\n[ ADMIN 비밀번호 변경 ]\n");
         System.out.print("현재 비밀번호 입력: ");
@@ -489,7 +490,7 @@ public class Display {
         }
     }
 
-    void printMenu() {
+    private void printMenu() {
 
         for (Menu value : menuList) {
             System.out.println(
@@ -500,7 +501,7 @@ public class Display {
         deleteMenu();
     }
 
-    void printProduct() {
+    private void printProduct() {
 
         for (Menu menu : menuList) {
             String menuName = menu.getName();
