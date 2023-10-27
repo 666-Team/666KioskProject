@@ -16,6 +16,8 @@ public class Display {
 
     static Scanner scanner = new Scanner(System.in);
 
+    static AdminDisplay adminDisplay = new AdminDisplay();
+
     static {
         // 데이터 초기화
         menuList.add(new Menu("햄버거 세트", "햄버거 세트입니다."));
@@ -59,7 +61,7 @@ public class Display {
 
         int number = Integer.parseInt(scanner.nextLine());
         if (number == 0) {
-
+            adminDisplay.printAdminLogin();
         } else if (number >= 1 && number <= menuList.size()) {
             consumerDisplay.printProductList(number);
         } else if (number == menuList.size() + 1) {
@@ -122,24 +124,3 @@ public class Display {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
