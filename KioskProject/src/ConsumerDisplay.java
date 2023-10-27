@@ -75,7 +75,6 @@ public class ConsumerDisplay {
         System.out.println("\n[ Total ]");
         System.out.println(Display.order.getBasketTotalPrice());
         System.out.println("\n고객님의 주문 요청사항: " + Display.order.getMessage() + "\n");
-        System.out.println("\n고객님의 주문 요청사항: " + Display.order.getMessage() + "\n");
         System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판\n");
         int orderSelect = Integer.parseInt(Display.scanner.nextLine());
         if (orderSelect == 1) {
@@ -96,6 +95,7 @@ public class ConsumerDisplay {
     }
 
     private void printOrderMessage() throws InterruptedException {
+
         System.out.println("\n요구사항을 입력하세요\n");
         String message = Display.scanner.nextLine();
         if (!isLengthTwenty(message)) {
