@@ -2,7 +2,7 @@ import java.util.List;
 
 public class ConsumerDisplay {
 
-    static void printProductList(int number) throws InterruptedException {
+    public void printProductList(int number) throws InterruptedException {
 
         Menu menu = Display.menuList.get(number - 1);
         String menuName = menu.getName();
@@ -36,7 +36,7 @@ public class ConsumerDisplay {
         }
     }
 
-    static void printAddBasket(Product orderProduct) {
+    private void printAddBasket(Product orderProduct) {
 
         System.out.println("\n" +
                 orderProduct.getName() + " | " + orderProduct.getPrice() + " | " + orderProduct.getExplain());
@@ -55,7 +55,7 @@ public class ConsumerDisplay {
         }
     }
 
-    static void printBasket() throws InterruptedException {
+    public void printBasket() throws InterruptedException {
 
         // 주문 내역 확인 및 토탈 가격 확인
         System.out.println("\n[ Orders ]");
@@ -95,7 +95,7 @@ public class ConsumerDisplay {
         }
     }
 
-    static void printOrderMessage() throws InterruptedException {
+    private void printOrderMessage() throws InterruptedException {
         System.out.println("\n요구사항을 입력하세요\n");
         String message = Display.scanner.nextLine();
         if (!isLengthTwenty(message)) {
@@ -106,11 +106,11 @@ public class ConsumerDisplay {
         printBasket();
     }
 
-    static boolean isLengthTwenty(String message) {
+    private boolean isLengthTwenty(String message) {
         return message.length() <= 20;
     }
 
-    static void printCancelBasket() throws InterruptedException {
+    public void printCancelBasket() throws InterruptedException {
 
         System.out.println("\n진행하던 주문을 취소하시겠습니까?");
         System.out.print("1. 확인  2. 취소\n");
@@ -128,7 +128,7 @@ public class ConsumerDisplay {
         }
     }
 
-    static void printCompletedOrder() throws InterruptedException {
+    private void printCompletedOrder() throws InterruptedException {
 
         System.out.println("\n주문이 완료되었습니다!\n");
         Display.order.setNumber();

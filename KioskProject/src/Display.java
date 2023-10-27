@@ -4,16 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 
 public class Display {
     // 필드
-    int password = 1004;
     static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
-
+    static ConsumerDisplay  consumerDisplay = new ConsumerDisplay();
     static Order order = new Order();
 
     static Scanner scanner = new Scanner(System.in);
@@ -63,17 +61,17 @@ public class Display {
         if (number == 0) {
 
         } else if (number >= 1 && number <= menuList.size()) {
-            ConsumerDisplay.printProductList(number);
+            consumerDisplay.printProductList(number);
         } else if (number == menuList.size() + 1) {
-            ConsumerDisplay.printBasket();
+            consumerDisplay.printBasket();
         } else if (number == menuList.size() + 2) {
-            ConsumerDisplay.printCancelBasket();
+            consumerDisplay.printCancelBasket();
         } else {
             System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
         }
     }
 
-    static void printRecentOrderList() {
+    private void printRecentOrderList() {
 
         List<Order> completedList = new ArrayList<>();
         List<Order> waitingOrderList = new ArrayList<>();
@@ -93,7 +91,7 @@ public class Display {
         printWaitingOrderList(waitingOrderList);
     }
 
-    static void printCompletedOrderListLimit3(List<Order> completedList) {
+    private void printCompletedOrderListLimit3(List<Order> completedList) {
         if (!completedList.isEmpty()) {
             int cnt = 0;
             System.out.println("[ 최근 완료 주문 목록 ]");
@@ -112,7 +110,7 @@ public class Display {
         }
     }
 
-    static void printWaitingOrderList(List<Order> waitingOrderList) {
+    private void printWaitingOrderList(List<Order> waitingOrderList) {
         if (!waitingOrderList.isEmpty()) {
             System.out.println("\n[ 대기 주문 목록 ]");
             for (Order waitingOrder : waitingOrderList) {
