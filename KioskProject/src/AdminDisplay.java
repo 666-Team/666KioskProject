@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 public class AdminDisplay {
     static int password = 1004;
+
     public void printAdminLogin() throws InterruptedException {
 
         System.out.println("\n[ ONLY ADMIN ]\n");
@@ -40,10 +41,7 @@ public class AdminDisplay {
         switch (mainSelect) {
             case 1 -> printAdminWaitingOrder();
             case 2 -> printCompletedOrderList();
-            case 3 -> {
-                addMenuOrProduct();
-                printAdminMenu();
-            }
+            case 3 -> addMenuOrProduct();
             case 4 -> deleteMenuOrProduct();
             case 5 -> printSaleTotalPrice();
             case 6 -> printSaleTotalProduct();
@@ -172,11 +170,14 @@ public class AdminDisplay {
             case 1 -> printAddMenu();
             case 2 -> printAddProduct();
             case 3 -> printAdminMenu();
-            default -> System.out.println("\n잘못된 입력입니다.");
+            default -> {
+                System.out.println("\n잘못된 입력입니다.");
+                printAdminMenu();
+            }
         }
     }
 
-    private void printAddMenu() {
+    private void printAddMenu() throws InterruptedException {
 
         System.out.println("\n메뉴 이름을 입력해 주세요.");
         String name = Display.scanner.nextLine();
@@ -188,9 +189,10 @@ public class AdminDisplay {
         Display.products.put(name, new ArrayList<>());
 
         System.out.println("\n메뉴 생성 완료!");
+        printAdminMenu();
     }
 
-    private void printAddProduct() {
+    private void printAddProduct() throws InterruptedException {
 
         System.out.println("\n메뉴를 선택해 주세요.");
 
@@ -213,10 +215,11 @@ public class AdminDisplay {
         newList.add(new Product(name, explain, price));
 
         System.out.println("\n상품 생성 완료!");
+        printAdminMenu();
     }
 
     // 4. 메뉴 및 상품 삭제
-    private void deleteMenuOrProduct() {
+    private void deleteMenuOrProduct() throws InterruptedException {
 
         System.out.println("\n어떤 항목을 삭제하시겠습니까?");
         System.out.println("1. 메뉴 삭제\t2. 상품 삭제");
@@ -224,11 +227,14 @@ public class AdminDisplay {
         switch (select) {
             case 1 -> printDeletionMenu();
             case 2 -> printDeletionProduct();
-            default -> System.out.println("잘못된 입력입니다.");
+            default -> {
+                System.out.println("잘못된 입력입니다.");
+                printAdminMenu();
+            }
         }
     }
 
-    private void printDeletionMenu() {
+    private void printDeletionMenu() throws InterruptedException {
 
         for (Menu value : Display.menuList) {
             System.out.println(
@@ -239,7 +245,7 @@ public class AdminDisplay {
         deleteMenu();
     }
 
-    private void deleteMenu() {
+    private void deleteMenu() throws InterruptedException {
 
         int delId = Integer.parseInt(Display.scanner.nextLine());
         boolean isRemoved = false;
@@ -248,19 +254,21 @@ public class AdminDisplay {
             if (menu.getId() == delId) {
                 System.out.println(
                         "ID : " + menu.getId() + "\t | " + menu.getName()
-                                + "\t | " + menu.getExplain() + "메뉴가 삭제되었습니다.");
+                                + "\t | " + menu.getExplain() + " 메뉴가 삭제되었습니다.");
                 Display.menuList.remove(i);
                 Display.products.remove(menu.getName());
                 isRemoved = true;
+                printAdminMenu();
                 break;
             }
         }
         if (!isRemoved) {
             System.out.println("잘못된 ID 입니다.");
+            printAdminMenu();
         }
     }
 
-    private void printDeletionProduct() {
+    private void printDeletionProduct() throws InterruptedException {
 
         for (Menu menu : Display.menuList) {
             String menuName = menu.getName();
@@ -275,7 +283,7 @@ public class AdminDisplay {
         deleteProduct();
     }
 
-    private void deleteProduct() {
+    private void deleteProduct() throws InterruptedException {
 
         int delId = Integer.parseInt(Display.scanner.nextLine());
         boolean isRemoved = false;
@@ -290,12 +298,14 @@ public class AdminDisplay {
                             + "상품이 삭제되었습니다.");
                     productList.remove(i);
                     isRemoved = true;
+                    printAdminMenu();
                     break;
                 }
             }
         }
         if (!isRemoved) {
             System.out.println("잘못된 ID 입니다.");
+            printAdminMenu();
         }
     }
 
