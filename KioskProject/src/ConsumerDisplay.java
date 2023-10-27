@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class ConsumerDisplay {
-    static Order order = new Order();
+
     static void printProductList(int number) throws InterruptedException {
 
         Menu menu = Display.menuList.get(number - 1);
@@ -47,7 +47,7 @@ public class ConsumerDisplay {
 
         switch (orderSelect) {
             case 1 -> {
-                order.addProduct(orderProduct);
+                Display.order.addProduct(orderProduct);
                 System.out.println("\n" + orderProduct.getName() + "가 장바구니에 추가되었습니다.");
             }
             case 2 -> System.out.println("\n메인화면으로 돌아갑니다.");
@@ -59,12 +59,12 @@ public class ConsumerDisplay {
 
         // 주문 내역 확인 및 토탈 가격 확인
         System.out.println("\n[ Orders ]");
-        if (order.getBasket().isEmpty()) {
+        if (Display.order.getBasket().isEmpty()) {
             {
                 System.out.println("장바구니가 비어있습니다.");
             }
         } else {
-            List<Product> basket = order.getBasket();
+            List<Product> basket = Display.order.getBasket();
             for (Product product : basket) {
                 double price = product.getPrice();
                 String name = product.getName();
@@ -73,12 +73,13 @@ public class ConsumerDisplay {
             }
         }
         System.out.println("\n[ Total ]");
-        System.out.println(order.getBasketTotalPrice());
-        System.out.println("\n고객님의 주문 요청사항: " + order.getMessage() + "\n");
+        System.out.println(Display.order.getBasketTotalPrice());
+        System.out.println("\n고객님의 주문 요청사항: " + Display.order.getMessage() + "\n");
+        System.out.println("\n고객님의 주문 요청사항: " + Display.order.getMessage() + "\n");
         System.out.println("1. 주문하기  2.주문 요청사항 입력하기  3. 메뉴판\n");
         int orderSelect = Integer.parseInt(Display.scanner.nextLine());
         if (orderSelect == 1) {
-            List<Product> basket = order.getBasket();
+            List<Product> basket = Display.order.getBasket();
             if (basket.isEmpty()) {
                 System.out.println("\n장바구니가 비어있어서 주문을 할 수 없습니다.");
                 printBasket();
@@ -101,7 +102,7 @@ public class ConsumerDisplay {
             System.out.println("요구사항은 20자 이내 작성해주세요.");
             printOrderMessage();
         }
-        order.saveOrderMessage(message);
+        Display.order.saveOrderMessage(message);
         printBasket();
     }
 
@@ -117,12 +118,12 @@ public class ConsumerDisplay {
         int orderSelect = Integer.parseInt(Display.scanner.nextLine());
         switch (orderSelect) {
             case 1 -> {
-                order = new Order();
+                Display.order = new Order();
                 System.out.println("\n진행하던 주문이 취소되었습니다.");
             }
             case 2 -> {
                 System.out.println("\n메인화면으로 돌아갑니다.");
-                Display.printMain();
+
             }
         }
     }
@@ -130,11 +131,11 @@ public class ConsumerDisplay {
     static void printCompletedOrder() throws InterruptedException {
 
         System.out.println("\n주문이 완료되었습니다!\n");
-        order.setNumber();
-        order.setOrderTime();
-        Display.orderList.add(order);
+        Display.order.setNumber();
+        Display.order.setOrderTime();
+        Display.orderList.add(Display.order);
         System.out.println("대기번호는 [ " + Order.orderNumber + " ] 번 입니다.");
-        order = new Order();
+        Display.order = new Order();
         System.out.println("(3초후 메뉴판으로 돌아갑니다.)");
         Thread.sleep(3000);
     }

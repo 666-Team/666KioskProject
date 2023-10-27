@@ -14,6 +14,8 @@ public class Display {
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
 
+    static Order order = new Order();
+
     static Scanner scanner = new Scanner(System.in);
 
     static {
@@ -43,7 +45,7 @@ public class Display {
     }
 
     // 메소드
-    public static void printMain() throws InterruptedException {
+    public void printMain() throws InterruptedException {
 
         printRecentOrderList();
 
