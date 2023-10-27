@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 
 public class Display {
@@ -12,9 +11,10 @@ public class Display {
     static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
+    static ConsumerDisplay  consumerDisplay = new ConsumerDisplay();
+    static Order order = new Order();
 
     static Scanner scanner = new Scanner(System.in);
-    static Order order = new Order();
 
     static AdminDisplay adminDisplay = new AdminDisplay();
 
@@ -62,15 +62,13 @@ public class Display {
         int number = Integer.parseInt(scanner.nextLine());
         if (number == 0) {
             adminDisplay.printAdminLogin();
-        }
-        else if (number >= 1 && number <= menuList.size()) {
-            printProductList(number);
+        } else if (number >= 1 && number <= menuList.size()) {
+            consumerDisplay.printProductList(number);
         } else if (number == menuList.size() + 1) {
-            printBasket();
+            consumerDisplay.printBasket();
         } else if (number == menuList.size() + 2) {
-            printCancelBasket();
-        }
-        else {
+            consumerDisplay.printCancelBasket();
+        } else {
             System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
         }
     }
@@ -125,5 +123,4 @@ public class Display {
             }
         }
     }
-
 }
