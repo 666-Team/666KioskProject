@@ -23,10 +23,9 @@ public class ConsumerDisplay {
         System.out.println(productList.size() + 1 + ". 장바구니 확인");
         System.out.println(productList.size() + 2 + ". 주문 취소\n");
 
-
         int setOrder = Integer.parseInt(Display.scanner.nextLine());
         if (setOrder >= 1 && setOrder <= productList.size()) {
-           printAddBasket(productList.get(setOrder - 1));
+            printAddBasket(productList.get(setOrder - 1));
         } else if (setOrder == productList.size() + 1) {
             printBasket();
         } else if (setOrder == productList.size() + 2) {

@@ -113,7 +113,8 @@ public class AdminDisplay {
     }
 
     private static List<Order> getWaitingOrderList() {
-        return Display.orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.WAITING).collect(Collectors.toList());
+        return Display.orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.WAITING)
+                .collect(Collectors.toList());
     }
 
     private double getSaleWaitingTotalPrice() {
@@ -144,9 +145,11 @@ public class AdminDisplay {
             }
             System.out.println("--------------------------------------------------");
 
-            System.out.println("총 주문 금액");
-            System.out.println(getSaleTotalPrice());
+
         }
+        System.out.println("총 주문 금액");
+        System.out.println(getCompletedTotalPrice());
+
         System.out.println("\n1. ADMIN MENU로 돌아가기");
         int input = Integer.parseInt(Display.scanner.nextLine());
 
@@ -158,7 +161,19 @@ public class AdminDisplay {
     }
 
     private static List<Order> getCompletedOrderList() {
-        return Display.orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.COMPLETED).collect(Collectors.toList());
+        return Display.orderList.stream().filter(o -> o.getOrderStatus() == OrderStatus.COMPLETED)
+                .collect(Collectors.toList());
+    }
+
+    private double getCompletedTotalPrice() {
+
+        double saleTotalPrice = 0;
+        for (Order currentOrder : Display.orderList) {
+            if (currentOrder.getOrderStatus() == OrderStatus.COMPLETED) {
+                saleTotalPrice += currentOrder.getBasketTotalPrice();
+            }
+        }
+        return saleTotalPrice;
     }
 
     private double getSaleTotalPrice() {

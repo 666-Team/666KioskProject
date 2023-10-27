@@ -11,12 +11,11 @@ public class Display {
     static List<Order> orderList = new ArrayList<>();
     static List<Menu> menuList = new ArrayList<>();
     static Map<String, List<Product>> products = new HashMap<>();
-    static ConsumerDisplay  consumerDisplay = new ConsumerDisplay();
+    static ConsumerDisplay consumerDisplay = new ConsumerDisplay();
+    static AdminDisplay adminDisplay = new AdminDisplay();
     static Order order = new Order();
 
     static Scanner scanner = new Scanner(System.in);
-
-    static AdminDisplay adminDisplay = new AdminDisplay();
 
     static {
         // 데이터 초기화
