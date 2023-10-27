@@ -222,11 +222,12 @@ public class AdminDisplay {
     private void deleteMenuOrProduct() throws InterruptedException {
 
         System.out.println("\n어떤 항목을 삭제하시겠습니까?");
-        System.out.println("1. 메뉴 삭제\t2. 상품 삭제");
+        System.out.println("1. 메뉴 삭제\t2. 상품 삭제\t3. 돌아가기");
         int select = Integer.parseInt(Display.scanner.nextLine());
         switch (select) {
             case 1 -> printDeletionMenu();
             case 2 -> printDeletionProduct();
+            case 3 -> printAdminMenu();
             default -> {
                 System.out.println("잘못된 입력입니다.");
                 printAdminMenu();
