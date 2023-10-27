@@ -89,7 +89,7 @@ public class AdminDisplay {
 
     private void printAdminWaitingToCompletedInput() throws InterruptedException {
 
-        System.out.println("\n완료 처리 할 대기 주문 번호 입력\n");
+        System.out.println("\n완료 처리 할 대기 주문 번호 입력 (0번 입력 시 취소)\n");
 
         int input = Integer.parseInt(Display.scanner.nextLine());
 
@@ -97,6 +97,9 @@ public class AdminDisplay {
 
         boolean isRemoved = false;
 
+        if (input == 0) {
+            printAdminWaitingOrder();
+        }
         for (Order currentOrder : waitingOrderList) {
             if (input == currentOrder.getNumber()) {
                 currentOrder.changeWaitingToCompleted();
