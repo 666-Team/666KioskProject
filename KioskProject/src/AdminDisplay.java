@@ -127,7 +127,7 @@ public class AdminDisplay {
     }
 
     // 2. 완료 주문 목록 조회
-    private void printCompletedOrderList() {
+    private void printCompletedOrderList() throws InterruptedException {
 
         List<Order> completedOrderList = getCompletedOrderList();
 
@@ -145,6 +145,14 @@ public class AdminDisplay {
 
             System.out.println("총 주문 금액");
             System.out.println(getSaleTotalPrice());
+        }
+        System.out.println("\n1. ADMIN MENU로 돌아가기");
+        int input = Integer.parseInt(Display.scanner.nextLine());
+
+        if (input == 1) {
+            printAdminMenu();
+        } else {
+            System.out.println("잘못된 값을 입력했습니다.");
         }
     }
 
