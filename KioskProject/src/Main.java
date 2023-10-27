@@ -5,7 +5,11 @@ public class Main {
         boolean runner = false;
 
         while (!runner) {
-            display.printMain();
+            try {
+                display.printMain();
+            } catch (IllegalArgumentException e) {
+                System.out.println("잘못된 값을 입력했습니다. 메인으로 돌아갑니다.");
+            }
         }
     }
 }

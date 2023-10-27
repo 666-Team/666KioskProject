@@ -11,16 +11,16 @@ public class Order {
 
     private double basketTotalPrice = 0;
 
-    private String message;
+    private String message = "미 입력";
 
     // 하위 객체
     private List<Product> basket = new ArrayList<>();
 
     private OrderStatus orderStatus;
 
-    LocalDateTime orderTime;
+    private LocalDateTime orderTime;
 
-    LocalDateTime orderCompleteTime;
+    private LocalDateTime orderCompleteTime;
 
     //생성자
 
@@ -44,7 +44,47 @@ public class Order {
         return basket;
     }
 
+    public void addProduct(Product product) {
+        basket.add(product);
+        addPrice(product.getPrice());
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setNumber() {
+        orderNumber++;
+        number = orderNumber;
+    }
+
+    public void setOrderTime() {
+        orderTime = LocalDateTime.now();
+    }
+
+    public void saveOrderMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public LocalDateTime getOrderTime() {
+        return orderTime;
+    }
+
+    public LocalDateTime getOrderCompleteTime() {
+        return orderCompleteTime;
+    }
+
+    public void changeWaitingToCompleted() {
+        this.orderCompleteTime = LocalDateTime.now();
+        this.orderStatus = OrderStatus.COMPLETED;
+    }
+
     public void addPrice(double price) {
         basketTotalPrice += price;
     }
+
 }
