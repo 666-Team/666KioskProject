@@ -149,9 +149,10 @@ public class AdminDisplay {
         System.out.println("\n1. ADMIN MENU로 돌아가기");
         int input = Integer.parseInt(Display.scanner.nextLine());
 
-        switch (input) {
-            case 1 -> printAdminMenu();
-            default -> System.out.println("잘못된 값을 입력했습니다.");
+        if (input == 1) {
+            printAdminMenu();
+        } else {
+            System.out.println("잘못된 값을 입력했습니다.");
         }
     }
 
